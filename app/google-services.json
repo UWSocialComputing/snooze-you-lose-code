@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1071751148954",
+    "project_id": "snoozeyoulose-ef364",
+    "storage_bucket": "snoozeyoulose-ef364.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071751148954:android:44ee6f8890dfcf40cdf623",
+        "android_client_info": {
+          "package_name": "com.capstone481p.snoozeyoulose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1071751148954-v5lfnam8tjkm8jcns42kjra1hp25i6oe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcc6Ihvr7Uop8C-QInDqTwDdyZDNwJezk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071751148954-v5lfnam8tjkm8jcns42kjra1hp25i6oe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
