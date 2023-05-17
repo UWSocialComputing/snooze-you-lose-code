@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf:20.3.2'
     implementation 'com.google.firebase:firebase-auth:22.0.0'
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 
     constraints {

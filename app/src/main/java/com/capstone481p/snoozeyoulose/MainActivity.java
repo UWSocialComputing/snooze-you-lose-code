@@ -3,6 +3,8 @@ package com.capstone481p.snoozeyoulose;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -32,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
+        // Authentication initialization
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             // Start sign in/sign up activity
             startActivityForResult(
@@ -45,18 +46,20 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // User is already signed in. Therefore, display
             // a welcome Toast
+            // TODO: Make this pretty
             Toast.makeText(this,
                             "Welcome " + FirebaseAuth.getInstance()
                                     .getCurrentUser()
                                     .getDisplayName(),
                             Toast.LENGTH_LONG)
                     .show();
-            // Load chat room contents
-            displayChatMessages();
+            // Loads user's account
+            displayAccount();
         }
 
 
-        
+        // Logs the Firebase installation id for your emulator, important for testing in-app
+        // messaging but does not effect much
         FirebaseInstallations.getInstance().getId()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -68,7 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void displayChatMessages(){
+    // Loads everything once user is signed in or signed up
+    public void displayAccount(){
+        // Right now this function just displays the three screen navigation view
+        // TODO: Create new views for profile and chat and inflate instead of current screens
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -76,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                R.id.navigation_home, R.id.navigation_chat, R.id.navigation_notifications)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -84,6 +90,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.signout_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_sign_out) {
+            AuthUI.getInstance().signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(MainActivity.this,
+                                            "You have been signed out.",
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                            // Close activity
+                            finish();
+                        }
+                    });
+        }
+        return true;
+    }
+
+    // Handles possible results of the sign in process
+    // TODO: Make messages pretty
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
@@ -94,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                                 "Successfully signed in. Welcome!",
                                 Toast.LENGTH_LONG)
                         .show();
-                displayChatMessages();
+                displayAccount();
             } else {
                 Toast.makeText(this,
                                 "We couldn't sign you in. Please try again later.",
