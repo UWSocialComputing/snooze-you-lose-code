@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,8 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,8 +26,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.capstone481p.snoozeyoulose.DashboardActivity;
+import com.capstone481p.snoozeyoulose.MainActivity;
 import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.databinding.FragmentHomeBinding;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 
 public class HomeFragment extends Fragment {
 
@@ -32,6 +39,10 @@ public class HomeFragment extends Fragment {
 
     private TextView tvTimer1, tvTimer2;
     private int t1Hour, t1Minute, t2Hour, t2Minute;
+
+    private Button awakeButton;
+    private FirebaseAnalytics firebaseAnalytics;
+    private Context context;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +52,8 @@ public class HomeFragment extends Fragment {
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         Log.d("CONTEXT", "Context for the fragment: "+getContext().getPackageName());
+
+        context = getContext();
 
         return view;
     }
@@ -123,11 +136,25 @@ public class HomeFragment extends Fragment {
                 timePickerDialog.show();
             }
         });
+
+        awakeButton = view.findViewById(R.id.awake_button);
+        awakeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle button click here
+                // You can communicate with the main activity or perform any desired action
+                awakeMessage();
+            }
+        });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
+    }
+
+    public void awakeMessage() {
+        Toast.makeText(context, "Congrats on waking up! Remember to rate your sleep", Toast.LENGTH_SHORT).show();
     }
 }

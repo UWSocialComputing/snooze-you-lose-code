@@ -76,5 +76,11 @@
         android:background="@android:drawable/editbox_background"
         app:drawableTopCompat="@drawable/baseline_access_time_24" />
 
+    <Button
+        android:id="@+id/awake_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I'm Awake!" />
+
 
 </LinearLayout>
