@@ -9,10 +9,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="Sign out added">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="we can use the button AND switch between screens now :nail_care:">
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_send.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/DashboardActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/DashboardActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_chat.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,7 +193,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684252875049</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="we can use the button AND switch between screens now :nail_care:">
+      <created>1684433078978</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1684433078978</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -210,6 +217,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add template" />
     <MESSAGE value="Basic Authentication working and in app notifications enabled" />
-    <option name="LAST_COMMIT_MESSAGE" value="Basic Authentication working and in app notifications enabled" />
+    <MESSAGE value="we can use the button AND switch between screens now :nail_care:" />
+    <option name="LAST_COMMIT_MESSAGE" value="we can use the button AND switch between screens now :nail_care:" />
   </component>
 </project>
