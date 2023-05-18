@@ -1,5 +1,6 @@
 package com.capstone481p.snoozeyoulose;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,13 +23,23 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.capstone481p.snoozeyoulose.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.installations.FirebaseInstallations;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int SIGN_IN_REQUEST_CODE = 1;
     private ActivityMainBinding binding;
 
+//    @Override
+//    protected void attachBaseContext(Context base){
+//        super.attachBaseContext(base);
+//        MultiDex.install(base);
+//    }
 
 
     @Override
@@ -75,18 +87,22 @@ public class MainActivity extends AppCompatActivity {
     public void displayAccount(){
         // Right now this function just displays the three screen navigation view
         // TODO: Create new views for profile and chat and inflate instead of current screens
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_chat, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        logNewUser();
+//        binding = ActivityMainBinding.inflate(getLayoutInflater());
+//        setContentView(binding.getRoot());
+//
+//        BottomNavigationView navView = findViewById(R.id.nav_view);
+//        // Passing each menu ID as a set of Ids because each
+//        // menu should be considered as top level destinations.
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+//                R.id.navigation_home, R.id.navigation_chat, R.id.navigation_users)
+//                .build();
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+//        NavigationUI.setupWithNavController(binding.navView, navController);
+        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 
@@ -127,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                                 "Successfully signed in. Welcome!",
                                 Toast.LENGTH_LONG)
                         .show();
+
                 displayAccount();
             } else {
                 Toast.makeText(this,
@@ -139,6 +156,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void logNewUser(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String email = user.getEmail();
+        String uid = user.getUid();
+        HashMap<Object, String> hashMap = new HashMap<>();
+        hashMap.put("email", email);
+        hashMap.put("uid", uid);
+        hashMap.put("name", "");
+        hashMap.put("onlineStatus", "online");
+        hashMap.put("typingTo", "noOne");
+        hashMap.put("phone", "");
+        hashMap.put("image", "");
+        hashMap.put("cover", "");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        // store the value in Database in "Users" Node
+        DatabaseReference reference = database.getReference("Users");
+
+        // storing the value in Firebase
+        reference.child(uid).setValue(hashMap);
+    }
 
 
 }
