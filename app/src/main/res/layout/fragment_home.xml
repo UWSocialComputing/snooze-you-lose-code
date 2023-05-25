@@ -39,18 +39,18 @@
         android:drawablePadding="16dp"
         />
 
+
     <TextView
+        android:id="@+id/tv_timer1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_timer1"
+        android:background="@android:drawable/editbox_background"
+        android:drawablePadding="16dp"
+        android:gravity="center"
         android:hint="SetWakeupTime"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:gravity="center"
-        android:drawablePadding="16dp"
-        android:background="@android:drawable/editbox_background"
         app:drawableTopCompat="@drawable/baseline_access_time_24" />
-
 
     <TextView
         android:layout_width="match_parent"
@@ -75,6 +75,10 @@
         android:layout_marginTop="16dp"
         android:background="@android:drawable/editbox_background"
         app:drawableTopCompat="@drawable/baseline_access_time_24" />
+
+    <Space
+        android:layout_width="367dp"
+        android:layout_height="53dp" />
 
     <Button
         android:id="@+id/awake_button"

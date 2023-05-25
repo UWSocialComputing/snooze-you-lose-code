@@ -56,7 +56,7 @@ public class DashboardActivity extends AppCompatActivity {
             Log.d("SCREEN", "Change screen: "+ menuItem.getItemId() );
             switch (menuItem.getItemId()) {
 
-                case 2131231108:
+                case 2131231103:
                     //  2131231110
                     //actionBar.setTitle("Home");
                     HomeFragment fragment = new HomeFragment();
@@ -65,7 +65,7 @@ public class DashboardActivity extends AppCompatActivity {
                     fragmentTransaction.commit();
                     return true;
 
-                case 2131231111:
+                case 2131231106:
                     //actionBar.setTitle("Users");
                     // 2131231113
                     UsersFragment fragment2 = new UsersFragment();
@@ -74,7 +74,7 @@ public class DashboardActivity extends AppCompatActivity {
                     fragmentTransaction2.commit();
                     return true;
 
-                case 2131231105:
+                case 2131231101:
                     //actionBar.setTitle("Chats");
                     // 2131231107
                     ChatFragment listFragment = new ChatFragment();

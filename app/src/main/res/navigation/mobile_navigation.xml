@@ -20,6 +20,6 @@
     <fragment
         android:id="@+id/navigation_users"
         android:name="com.capstone481p.snoozeyoulose.ui.users.UsersFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:label="Users"
+        tools:layout="@layout/fragment_users" />
 </navigation>
