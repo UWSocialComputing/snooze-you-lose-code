@@ -49,13 +49,17 @@ public class ModelUsers {
         this.uid = uid;
     }
 
-    public ModelUsers(String name, String onlineStatus, String typingTo, String email, String image, String uid) {
+    public void setAccountability(String accountability) { this.accountability = accountability; }
+
+    public String getAccountability() { return accountability; }
+    public ModelUsers(String name, String onlineStatus, String typingTo, String email, String image, String uid, String accountability) {
         this.name = name;
         this.onlineStatus = onlineStatus;
         this.typingTo = typingTo;
         this.email = email;
         this.image = image;
         this.uid = uid;
+        this.accountability = accountability;
     }
 
     String email;
@@ -63,4 +67,6 @@ public class ModelUsers {
     String image;
 
     String uid;
+
+    String accountability;
 }

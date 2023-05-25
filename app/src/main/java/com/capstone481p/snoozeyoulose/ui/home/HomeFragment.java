@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -35,6 +36,10 @@ import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.databinding.FragmentHomeBinding;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 
 public class HomeFragment extends Fragment {
@@ -160,6 +165,11 @@ public class HomeFragment extends Fragment {
            @Override
            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                parent.getItemAtPosition(position);
+               FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+               // store the value in Database in "Users" Node
+               DatabaseReference ref = database.getReference("Users").child("accountability");
+               ref.setValue(parent.getItemAtPosition(position).toString());
            }
 
            @Override
