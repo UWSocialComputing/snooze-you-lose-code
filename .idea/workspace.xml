@@ -9,10 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="Attempt to use AlarmManager and clock to send notifications to friends. Will open but crashed after set alarm button is pressed.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/ui/home/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/ui/home/HomeFragment.java" afterDir="false" />
-    </list>
+    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="Attempt to use AlarmManager and clock to send notifications to friends. Will open but crashed after set alarm button is pressed." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -221,7 +218,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685082001389</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Attempt to use AlarmManager and clock to send notifications to friends. Will open but crashed after set alarm button is pressed.">
+      <created>1685082324572</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1685082324572</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
