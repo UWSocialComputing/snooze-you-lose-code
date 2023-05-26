@@ -168,8 +168,8 @@ public class HomeFragment extends Fragment {
                FirebaseDatabase database = FirebaseDatabase.getInstance();
 
                // store the value in Database in "Users" Node
-               DatabaseReference ref = database.getReference("Users").child("accountability");
-               ref.setValue(parent.getItemAtPosition(position).toString());
+               DatabaseReference ref = database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+               ref.child("accountability").setValue(parent.getItemAtPosition(position).toString());
            }
 
            @Override
