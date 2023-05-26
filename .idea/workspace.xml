@@ -9,12 +9,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="HECK YEAH ACCOUNTABILITY IS IN THE DB NOW AND IT UPDATES WHEN USERS CHANGE THE OPTION IN THE DROPDOWN 💤💤💤">
+    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="Attempt to use AlarmManager and clock to send notifications to friends. Will open but crashed after set alarm button is pressed.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/DashboardActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/DashboardActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/ui/home/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/ui/home/HomeFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +97,7 @@
     "project.structure.last.edited": "Dependencies",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+    "settings.editor.selected.configurable": "vcs.Git"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -210,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685058390565</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Attempt to use AlarmManager and clock to send notifications to friends. Will open but crashed after set alarm button is pressed.">
+      <created>1685079590278</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1685079590279</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -229,6 +232,7 @@
     <MESSAGE value="Basic Authentication working and in app notifications enabled" />
     <MESSAGE value="accountability front end is set! we can look into adding this info to the db tho :thinking:" />
     <MESSAGE value="HECK YEAH ACCOUNTABILITY IS IN THE DB NOW AND IT UPDATES WHEN USERS CHANGE THE OPTION IN THE DROPDOWN " />
-    <option name="LAST_COMMIT_MESSAGE" value="HECK YEAH ACCOUNTABILITY IS IN THE DB NOW AND IT UPDATES WHEN USERS CHANGE THE OPTION IN THE DROPDOWN " />
+    <MESSAGE value="Attempt to use AlarmManager and clock to send notifications to friends. Will open but crashed after set alarm button is pressed." />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt to use AlarmManager and clock to send notifications to friends. Will open but crashed after set alarm button is pressed." />
   </component>
 </project>
