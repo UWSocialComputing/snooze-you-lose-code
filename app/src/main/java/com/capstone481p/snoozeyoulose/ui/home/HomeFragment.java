@@ -1,5 +1,9 @@
 package com.capstone481p.snoozeyoulose.ui.home;
 
+import static android.text.format.DateFormat.is24HourFormat;
+import static java.text.DateFormat.*;
+
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -9,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -27,6 +32,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -42,6 +48,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 
+// added this for the alarm manager
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TimePicker;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import java.util.Calendar;
+
+
+
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
@@ -52,6 +76,12 @@ public class HomeFragment extends Fragment {
     private Button awakeButton;
     private Spinner dropDown;
     private Context context;
+
+    // for alarm manager
+    private static final int ALARM_REQUEST_CODE = 123;
+    private TimePicker timePicker;
+    private Button setAlarmButton;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +97,22 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // for time manager
+        // Initialize views
+        timePicker = view.findViewById(R.id.timePicker);
+        setAlarmButton = view.findViewById(R.id.setAlarmButton);
+
+
+        // Set click listener for the button
+        setAlarmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setAlarm();
+            }
+
+        });
+
 
         tvTimer1 = view.findViewById(R.id.tv_timer1);
         tvTimer2 = view.findViewById(R.id.tv_timer2);
@@ -179,6 +225,30 @@ public class HomeFragment extends Fragment {
        }
 
         );
+    }
+
+    /**
+     * for alarm manager
+     */
+    private void setAlarm() {
+
+        // Get the selected hour and minute from the TimePicker
+        int hour = timePicker.getCurrentHour();
+        int minute = timePicker.getCurrentMinute();
+
+        // Create a Calendar object and set the selected hour and minute
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        // Set up the AlarmManager
+        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(requireContext(), AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), ALARM_REQUEST_CODE, intent, 0);
+
+        // Set the alarm to trigger at the selected time
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
     @Override
