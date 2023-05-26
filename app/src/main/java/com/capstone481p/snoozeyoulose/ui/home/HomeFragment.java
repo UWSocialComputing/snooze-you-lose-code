@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,7 +16,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -31,6 +36,10 @@ import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.databinding.FragmentHomeBinding;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 
 public class HomeFragment extends Fragment {
@@ -41,15 +50,12 @@ public class HomeFragment extends Fragment {
     private int t1Hour, t1Minute, t2Hour, t2Minute;
 
     private Button awakeButton;
-    private FirebaseAnalytics firebaseAnalytics;
+    private Spinner dropDown;
     private Context context;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);;
-
-        //final TextView textView = binding.textHome;
-        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         Log.d("CONTEXT", "Context for the fragment: "+getContext().getPackageName());
 
@@ -146,6 +152,33 @@ public class HomeFragment extends Fragment {
                 awakeMessage();
             }
         });
+
+        dropDown = view.findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
+                R.array.accountability_options, android.R.layout.simple_spinner_item);
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Apply the adapter to the spinner
+                dropDown.setAdapter(adapter);
+        dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               parent.getItemAtPosition(position);
+               FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+               // store the value in Database in "Users" Node
+               DatabaseReference ref = database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+               ref.child("accountability").setValue(parent.getItemAtPosition(position).toString());
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> parent) {
+                parent.getFirstVisiblePosition();
+           }
+       }
+
+        );
     }
 
     @Override

@@ -80,6 +80,21 @@
         android:layout_width="367dp"
         android:layout_height="53dp" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose your accountability type" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="37dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="53dp" />
+
     <Button
         android:id="@+id/awake_button"
         android:layout_width="match_parent"

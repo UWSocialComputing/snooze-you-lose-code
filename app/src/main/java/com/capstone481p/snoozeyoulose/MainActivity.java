@@ -171,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
         hashMap.put("phone", "");
         hashMap.put("image", "");
         hashMap.put("cover", "");
+        // TODO: would like to add accountability to the database but unsure how to add this and update the value
+        hashMap.put("accountability", "");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         // store the value in Database in "Users" Node

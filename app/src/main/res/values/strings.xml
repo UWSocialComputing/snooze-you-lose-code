@@ -10,6 +10,14 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string-array name="accountability_options">
+        <item>Send a text to my friend</item>
+        <item>Donate to charity</item>
+        <item>Post on your IG story</item>
+        <item>Send money to a friend</item>
+        <item>No social media before bed</item>
+        <item>Call your friend</item>
+    </string-array>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
