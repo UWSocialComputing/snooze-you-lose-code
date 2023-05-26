@@ -246,7 +246,7 @@ public class HomeFragment extends Fragment {
         // Set up the AlarmManager
         AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(requireContext(), AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), ALARM_REQUEST_CODE, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
 
         // Set the alarm to trigger at the selected time
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
