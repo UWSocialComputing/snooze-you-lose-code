@@ -22,13 +22,17 @@
             android:layout_width="25dp"
             android:layout_height="25dp" />
 
+
+
         <TextView
             android:id="@+id/nameonline"
-            android:layout_width="match_parent"
+            android:layout_width="335dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
             android:layout_toEndOf="@id/profileimage"
             android:layout_toRightOf="@id/profileimage"
+            android:layout_marginTop="10dp"
             android:text="His Name"
             android:textColor="@color/black"
             android:textSize="18sp" />
@@ -38,7 +42,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/nameonline"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="3dp"
             android:layout_toEndOf="@id/profileimage"
             android:layout_toRightOf="@id/profileimage"
             android:maxLines="2"
