@@ -137,6 +137,7 @@ public class HomeFragment extends Fragment {
                             }
                         }, 12, 0, false
                 );
+                //TODO DELETE THIS IT"S A PUSH TEST FOR BASIA
                 //Displayed previous selected time
                 timePickerDialog.updateTime(t1Hour, t1Minute);
                 //Show dialog
