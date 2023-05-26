@@ -160,10 +160,12 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String email = user.getEmail();
         String uid = user.getUid();
+        String name = user.getDisplayName();
+
         HashMap<Object, String> hashMap = new HashMap<>();
         hashMap.put("email", email);
         hashMap.put("uid", uid);
-        hashMap.put("name", "");
+        hashMap.put("name", name);
         hashMap.put("onlineStatus", "online");
         hashMap.put("typingTo", "noOne");
         hashMap.put("phone", "");

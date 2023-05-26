@@ -87,7 +87,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@null"
-            android:src="@drawable/ic_dashboard_black_24dp" />
+            android:src="@drawable/baseline_add_photo_alternate_24" />
 
         <EditText
             android:id="@+id/messaget"
