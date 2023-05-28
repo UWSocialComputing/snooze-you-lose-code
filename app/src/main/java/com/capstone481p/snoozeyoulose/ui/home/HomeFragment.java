@@ -93,6 +93,9 @@ public class HomeFragment extends Fragment {
     private String dropDownTxt;
     private int lastPos;
 
+    private String wakeUpTxt;
+    private String bedTxt;
+
     private Context context;
 
     // for alarm manager
@@ -131,7 +134,8 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         // for time manager
         // Initialize views
@@ -140,6 +144,12 @@ public class HomeFragment extends Fragment {
 
         tvTimer1 = view.findViewById(R.id.tv_timer1);
         tvTimer2 = view.findViewById(R.id.tv_timer2);
+
+        t1Hour = sharedPreferences.getInt("t1Hour", 12);
+        t1Minute = sharedPreferences.getInt("t1Minute", 0);
+        t2Hour = sharedPreferences.getInt("t2Hour", 12);
+        t2Minute = sharedPreferences.getInt("t2Minute", 0);
+
 
 
         setAlarmButtonW.setOnClickListener(new View.OnClickListener() {
@@ -181,8 +191,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+
 
         // Retrieve the last selected position from SharedPreferences
         lastPos = sharedPreferences.getInt("lastPos", 0);
@@ -281,10 +290,15 @@ public class HomeFragment extends Fragment {
                         if (textView == tvTimer1) {
                             t1Hour = hourOfDay;
                             t1Minute = minute;
+                            editor.putInt("t1Hour", t1Hour);
+                            editor.putInt("t1Minute", t1Minute);
                         } else if (textView == tvTimer2) {
                             t2Hour = hourOfDay;
                             t2Minute = minute;
+                            editor.putInt("t2Hour", t2Hour);
+                            editor.putInt("t2Minute", t2Minute);
                         }
+                        editor.apply();
 
                         Calendar calendar = Calendar.getInstance();
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -293,6 +307,36 @@ public class HomeFragment extends Fragment {
 
                         Log.d("AlarmTime", "Calendar time in millis: " + calendar.getTimeInMillis());
                         textView.setText(android.text.format.DateFormat.format("hh:mm aa", calendar));
+
+                        String tempT1 = String.valueOf(t1Hour);
+                        if (t1Hour < 10) {
+                            tempT1 = "0" + t1Hour;
+                        }
+                        if (t1Minute < 10) {
+                            tempT1 += ":0" + t1Minute;
+                        } else {
+                            tempT1 += ":" + t1Minute;
+                        }
+
+                        String tempT2 = String.valueOf(t2Hour);
+                        if (t2Hour < 10) {
+                            tempT2 = "0" + t2Hour;
+                        }
+                        if (t2Minute < 10) {
+                            tempT2 += ":0" + t2Minute;
+                        } else {
+                            tempT2 += ":" + t2Minute;
+                        }
+                        wakeUpTxt = tempT1;
+                        bedTxt = tempT2;
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                        Log.d("Firebase", "times: " + wakeUpTxt + " & " + bedTxt);
+
+                        // store the value in Database in "Users" Node
+                        DatabaseReference ref = database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        ref.child("bedTime").setValue(bedTxt);
+                        ref.child("wakeupTime").setValue(wakeUpTxt);
                     }
                 },
                 12, 0, false
