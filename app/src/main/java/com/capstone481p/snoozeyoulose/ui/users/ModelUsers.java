@@ -52,7 +52,14 @@ public class ModelUsers {
     public void setAccountability(String accountability) { this.accountability = accountability; }
 
     public String getAccountability() { return accountability; }
-    public ModelUsers(String name, String onlineStatus, String typingTo, String email, String image, String uid, String accountability) {
+
+    public void setBedTime(String bedTime) { this.bedTime = bedTime; }
+    public String getBedTime() { return bedTime; }
+
+    public void setWakeupTime(String wakeupTime) { this.wakeupTime = wakeupTime; }
+    public String getWakeupTime() { return wakeupTime; }
+
+    public ModelUsers(String name, String onlineStatus, String typingTo, String email, String image, String uid, String accountability, String bedTime, String wakeupTime) {
         this.name = name;
         this.onlineStatus = onlineStatus;
         this.typingTo = typingTo;
@@ -60,6 +67,8 @@ public class ModelUsers {
         this.image = image;
         this.uid = uid;
         this.accountability = accountability;
+        this.bedTime = bedTime;
+        this.wakeupTime = wakeupTime;
     }
 
     String email;
@@ -69,4 +78,8 @@ public class ModelUsers {
     String uid;
 
     String accountability;
+
+    String bedTime;
+
+    String wakeupTime;
 }
