@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
     private Button awakeButton;
     private Spinner dropDown;
     private String dropDownTxt;
-    private int lastPos = 0;
+    private int lastPos;
 
     private Context context;
 
@@ -195,12 +195,7 @@ public class HomeFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         dropDown.setAdapter(adapter);
-/*
-        if (savedInstanceState != null) {
-            lastPos = savedInstanceState.getInt("lastPos", 0); // Restore the last selected position
-            Log.d("Firebase", "old pos: " + lastPos);
-        }
-*/
+
         // Set the spinner selection to the last selected position
         Log.d("Firebase", "curr pos: " + lastPos);
         dropDown.setSelection(lastPos);
@@ -226,10 +221,17 @@ public class HomeFragment extends Fragment {
                                                @Override
                                                public void onNothingSelected(AdapterView<?> parent) {
                                                    // dropDown.setSelection(lastPos);
+                                                   Log.d("Firebase", "nothing selected: " + lastPos);
+                                                   dropDown.setSelection(lastPos);
                                                }
                                            }
-
         );
+
+        if (savedInstanceState != null) {
+            lastPos = savedInstanceState.getInt("lastPos", 0); // Restore the last selected position
+            Log.d("Firebase", "old pos: " + lastPos);
+        }
+
     }
 
     /**
@@ -390,7 +392,9 @@ public class HomeFragment extends Fragment {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState != null) {
             lastPos = savedInstanceState.getInt("lastPos", 0);
-            dropDown.setSelection(lastPos);
+            if (dropDown != null) {
+                dropDown.setSelection(lastPos);
+            }
         }
     }
 
