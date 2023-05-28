@@ -29,6 +29,8 @@ public class ProfileFragment extends Fragment {
     private Button awakeButton;
     private Button settingsButton;
     private String userName;
+    private String wakeUpTime;
+    private String bedTime;
     private String accountability;
 
     @Override
@@ -54,6 +56,8 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d("Firebase", snapshot.toString()); // Log the snapshot for debugging
                 userName = snapshot.child("name").getValue(String.class);
+                bedTime = snapshot.child("bedTime").getValue(String.class);
+                wakeUpTime = snapshot.child("wakeupTime").getValue(String.class);
                 Log.d("Firebase", "UserName: " + userName); // Log the retrieved username
                 Log.d("Firebase", "accountability: " + GlobalVars.accountabilityType); // Log the retrieved username
                 TextView welcomeUserText = view.findViewById(R.id.welcomeUserText);
@@ -61,9 +65,9 @@ public class ProfileFragment extends Fragment {
 
                 // accountability = snapshot.child("accountability").getValue(String.class);
                 TextView currentSettings = view.findViewById(R.id.currentSettings);
-                String multiTxt = "Wake Up Time \t8:30am\n" +
-                        "BedTime\t10:25pm\n" +
-                        "Accountability\t" + GlobalVars.accountabilityType;
+                String multiTxt = "Wake Up Time:\t\t" + wakeUpTime +"\n" +
+                        "BedTime:\t\t" + bedTime + "\n" +
+                        "Accountability:\t\t" + GlobalVars.accountabilityType;
                 currentSettings.setText(multiTxt);
             }
 
