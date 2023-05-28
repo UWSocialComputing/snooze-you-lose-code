@@ -68,6 +68,15 @@ public class DashboardActivity extends AppCompatActivity {
                     return true;
 
                 case 2131296644:
+                    //  2131231110
+                    //actionBar.setTitle("Profile");
+                    ProfileFragment fragmentP = new ProfileFragment();
+                    FragmentTransaction fragmentTransactionP = getSupportFragmentManager().beginTransaction();
+                    fragmentTransactionP.replace(R.id.content, fragmentP, "");
+                    fragmentTransactionP.commit();
+                    return true;
+
+                case 2131296645:
                     //actionBar.setTitle("Users");
                     // 2131231113
                     UsersFragment fragment2 = new UsersFragment();

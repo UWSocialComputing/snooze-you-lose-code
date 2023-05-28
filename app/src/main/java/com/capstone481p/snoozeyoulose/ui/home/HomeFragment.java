@@ -91,6 +91,8 @@ public class HomeFragment extends Fragment {
     private Button awakeButton;
     private Spinner dropDown;
     private String dropDownTxt;
+    private int lastPos = 0;
+
     private Context context;
 
     // for alarm manager
@@ -131,17 +133,6 @@ public class HomeFragment extends Fragment {
         setAlarmButtonW = view.findViewById(R.id.setAlarmButtonW);
         setAlarmButtonB = view.findViewById(R.id.setAlarmButtonB);
 
-
-        // Set click listener for the button
-        /** setAlarmButton.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-        setAlarm();
-        awakeMessage();
-        }
-
-        });**/
-
-
         tvTimer1 = view.findViewById(R.id.tv_timer1);
         tvTimer2 = view.findViewById(R.id.tv_timer2);
 
@@ -172,122 +163,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        /**
-         tvTimer1.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(
-        getContext(),
-        new TimePickerDialog.OnTimeSetListener() {
-        @Override public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        //Initialize hour and minute
-        t1Hour = hourOfDay;
-        t1Minute = minute;
-        //Initialize calendar
-        Calendar calendar = Calendar.getInstance();
-        //Set hour and  minute
-        calendar.set(Calendar.HOUR_OF_DAY, t1Hour);
-        calendar.set(Calendar.MINUTE, t1Minute);
-        //calendar.set(0, 0, 0, t1Hour, t1Minute);
-        //Set selected time on text view
-        tvTimer1.setText(android.text.format.DateFormat.format("hh:mm aa", calendar));
-
-
-        }
-        }, 12, 0, false
-        );
-        //TODO DELETE THIS IT"S A PUSH TEST FOR BASIA
-
-
-        //Displayed previous selected time
-        Log.d("MyApp", "t1Hour: " + t1Hour);
-        Log.d("MyApp", "t1Minute: " + t1Minute);
-        timePickerDialog.updateTime(t1Hour, t1Minute);
-        //Show dialog
-        timePickerDialog.show();
-
-        // Set click listener for the button
-        setAlarmButtonW.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-        // Initialize calendar
-        Calendar calendar = Calendar.getInstance();
-        // Set hour and minute
-        Log.d("MyApp", "t1Hour: " + t1Hour);
-        Log.d("MyApp", "t1Minute: " + t1Minute);
-        calendar.set(Calendar.HOUR_OF_DAY, t1Hour);
-        calendar.set(Calendar.MINUTE, t1Minute);
-        //calendar.set(0, 0, 0, t1Hour, t1Minute);
-
-        // Set up the AlarmManager
-        AlarmManager alarmManagerW = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        Log.d("MyApp", "t1Hour: " + t1Hour);
-        Log.d("MyApp", "t1Minute: " + t1Minute);
-        Log.d("AlarmTime", "Calendar time in millis: " + calendar.getTimeInMillis());
-        // Set the alarm to trigger at the selected time
-        alarmManagerW.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        Toast.makeText(context, "Set Alarm!", Toast.LENGTH_SHORT).show();
-        }
-
-        });
-        //
-        //                if (!tvTimer1.equals(null)) {
-        //                    Users users = new Users(tvTimer1, tvTimer2);
-        //                }
-        }
-        });
-
-         tvTimer2.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(
-        getContext(),
-        new TimePickerDialog.OnTimeSetListener() {
-        @Override public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        //Initialize hour and minute
-        t2Hour = hourOfDay;
-        t2Minute = minute;
-        //Initialize calendar
-        Calendar calendar2 = Calendar.getInstance();
-        //Set hour and  minute
-        calendar2.set(0, 0, 0, t2Hour, t2Minute);
-        //Set selected time on text view
-        tvTimer2.setText(android.text.format.DateFormat.format("hh:mm aa", calendar2));
-
-        // Set click listener for the button
-        setAlarmButtonB.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-        // Set up the AlarmManager
-        AlarmManager alarmManagerB = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent2 = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, ALARM_REQUEST_CODE, intent2, PendingIntent.FLAG_IMMUTABLE);
-
-        // Set the alarm to trigger at the selected time
-        alarmManagerB.set(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent2);
-        Toast.makeText(context, "Set Alarm!", Toast.LENGTH_SHORT).show();
-        }
-
-        });
-        }
-        }, 12, 0, false
-        );
-        //TODO DELETE THIS IT"S A PUSH TEST FOR BASIA
-
-
-        //Displayed previous selected time
-        timePickerDialog.updateTime(t2Hour, t2Minute);
-        //Show dialog
-        timePickerDialog.show();
-        //
-        //                if (!tvTimer1.equals(null)) {
-        //                    Users users = new Users(tvTimer1, tvTimer2);
-        //                }
-        }
-        });
-
-         */
-
-
         awakeButton = view.findViewById(R.id.awake_button);
         awakeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -306,11 +181,22 @@ public class HomeFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         dropDown.setAdapter(adapter);
+/*
+        if (savedInstanceState != null) {
+            lastPos = savedInstanceState.getInt("lastPos", 0); // Restore the last selected position
+            Log.d("Firebase", "old pos: " + lastPos);
+        }
+*/
+        // Set the spinner selection to the last selected position
+        Log.d("Firebase", "curr pos: " + lastPos);
+        dropDown.setSelection(lastPos);
         dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                                @Override
                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                                    parent.getItemAtPosition(position);
                                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                   lastPos = position;
+                                                   Log.d("Firebase", "new pos: " + lastPos);
 
                                                    // store the value in Database in "Users" Node
                                                    DatabaseReference ref = database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -322,7 +208,7 @@ public class HomeFragment extends Fragment {
 
                                                @Override
                                                public void onNothingSelected(AdapterView<?> parent) {
-                                                   parent.getFirstVisiblePosition();
+                                                   // dropDown.setSelection(lastPos);
                                                }
                                            }
 
@@ -422,27 +308,6 @@ public class HomeFragment extends Fragment {
                 } else {
                     notificationManager.notify(ALARM_REQUEST_CODE, builder.build());
                 }
-
-
-        /*
-        // Show the notification
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            // Permission is not granted, request it
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
-            Toast.makeText(context, "in the if", Toast.LENGTH_SHORT).show();
-        } else {
-            notificationManager.notify(ALARM_REQUEST_CODE, builder.build());
-        }
-
-         */
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -478,6 +343,22 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("lastPos", lastPos); // Save the last selected position
+        Log.d("Firebase", "lastpos: " + lastPos);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            lastPos = savedInstanceState.getInt("lastPos", 0);
+            dropDown.setSelection(lastPos);
+        }
     }
 
     public void awakeMessage() {
