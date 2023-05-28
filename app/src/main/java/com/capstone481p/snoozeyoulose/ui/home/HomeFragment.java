@@ -85,7 +85,7 @@ public class HomeFragment extends Fragment {
 
     //private FragmentHomeBinding binding;
 
-    private TextView tvTimer1, tvTimer2;
+    private TextView tvTimer1, tvTimer2, Timer;
     private int t1Hour, t1Minute, t2Hour, t2Minute;
 
     private Button awakeButton;
@@ -109,6 +109,9 @@ public class HomeFragment extends Fragment {
     private static final String CHANNEL_ID = "alarm_channel";
     private static final String CHANNEL_NAME = "Alarm Channel";
 
+    //for the saving accountability on home
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -118,25 +121,29 @@ public class HomeFragment extends Fragment {
 
         context = getContext();
 
-        createNotificationChannel(); // Create notification channel for Android 8.0 and above
+        createNotificationChannel();
 
         return view;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
         // for time manager
         // Initialize views
-        //timePicker = view.findViewById(R.id.timePicker);
         setAlarmButtonW = view.findViewById(R.id.setAlarmButtonW);
         setAlarmButtonB = view.findViewById(R.id.setAlarmButtonB);
 
         tvTimer1 = view.findViewById(R.id.tv_timer1);
         tvTimer2 = view.findViewById(R.id.tv_timer2);
 
+
         setAlarmButtonW.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 setAlarm(tvTimer1);
@@ -163,6 +170,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
         awakeButton = view.findViewById(R.id.awake_button);
         awakeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +180,12 @@ public class HomeFragment extends Fragment {
                 awakeMessage();
             }
         });
+
+        sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        // Retrieve the last selected position from SharedPreferences
+        lastPos = sharedPreferences.getInt("lastPos", 0);
 
         dropDown = view.findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -196,6 +210,9 @@ public class HomeFragment extends Fragment {
                                                    parent.getItemAtPosition(position);
                                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
                                                    lastPos = position;
+                                                   editor.putInt("lastPos", lastPos);
+                                                   editor.apply();
+
                                                    Log.d("Firebase", "new pos: " + lastPos);
 
                                                    // store the value in Database in "Users" Node
@@ -218,6 +235,7 @@ public class HomeFragment extends Fragment {
     /**
      * for alarm manager
      */
+
     private void setAlarm(final TextView textView) {
         String selectedTime = textView.getText().toString();
         if (!selectedTime.isEmpty()) {
@@ -236,12 +254,13 @@ public class HomeFragment extends Fragment {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
 
             // Set the alarm to trigger at the selected time
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            //alarmManager.setExact();
 
             Toast.makeText(context, "Alarm Set!", Toast.LENGTH_SHORT).show();
 
             // Show notification
-            showNotification(calendar);
+            showNotification(calendar, textView);
         } else {
             Toast.makeText(context, "Please select a time first.", Toast.LENGTH_SHORT).show();
         }
@@ -250,18 +269,24 @@ public class HomeFragment extends Fragment {
     /***
      * For timePicker
      */
+
     private void showTimePickerDialog(final TextView textView) {
         TimePickerDialog timePickerDialog = new TimePickerDialog(
                 getContext(),
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        t1Hour = hourOfDay;
-                        t1Minute = minute;
+                        if (textView == tvTimer1) {
+                            t1Hour = hourOfDay;
+                            t1Minute = minute;
+                        } else if (textView == tvTimer2) {
+                            t2Hour = hourOfDay;
+                            t2Minute = minute;
+                        }
 
                         Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.HOUR_OF_DAY, t1Hour);
-                        calendar.set(Calendar.MINUTE, t1Minute);
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
                         //calendar.set(0, 0, 0, t1Hour, t1Minute);
 
                         Log.d("AlarmTime", "Calendar time in millis: " + calendar.getTimeInMillis());
@@ -270,12 +295,17 @@ public class HomeFragment extends Fragment {
                 },
                 12, 0, false
         );
+        if (textView == tvTimer1) {
+            timePickerDialog.updateTime(t1Hour, t1Minute);
+        } else if (textView == tvTimer2) {
+            timePickerDialog.updateTime(t2Hour, t2Minute);
+        }
 
-        timePickerDialog.updateTime(t1Hour, t1Minute);
         timePickerDialog.show();
     }
 
-    private void showNotification(Calendar calendar) {
+
+    private void showNotification(Calendar calendar, TextView textView) {
         // Create an explicit intent for the activity to be launched when the notification is clicked
         Intent notificationIntent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -299,24 +329,25 @@ public class HomeFragment extends Fragment {
         Toast.makeText(context, "showNotification() called", Toast.LENGTH_SHORT).show(); // Display a Toast message
 
 
-                // Show the notification
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                    // Permission is not granted, request it
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
-                    Toast.makeText(context, "Requesting permission", Toast.LENGTH_SHORT).show();
-                } else {
-                    notificationManager.notify(ALARM_REQUEST_CODE, builder.build());
-                }
+        // Show the notification
+        Timer = textView;
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted, request it
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+                Toast.makeText(context, "Requesting permission", Toast.LENGTH_SHORT).show();
+            } else {
+                notificationManager.notify(ALARM_REQUEST_CODE, builder.build());
+            }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission is granted, proceed with your logic
-                setAlarm(tvTimer1);
+                // Permission is granted, proceed
+                setAlarm(Timer);
             } else {
-                // Permission is denied, handle accordingly (e.g., show a message, disable functionality)
+                // Permission is denied, handle accordingly
                 Toast.makeText(context, "Permission denied", Toast.LENGTH_SHORT).show();
             }
         }
@@ -338,6 +369,8 @@ public class HomeFragment extends Fragment {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+
 
     @Override
     public void onDestroyView() {
