@@ -32,6 +32,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("DEBUG", "Entering Dashboard activity");
         setContentView(R.layout.activity_dashboard);
         actionBar = getSupportActionBar();
         //actionBar.setTitle("Profile Activity");
@@ -44,10 +45,19 @@ public class DashboardActivity extends AppCompatActivity {
         // When we open the application first
         // time the fragment should be shown to the user
         // in this case it is home fragment
-        HomeFragment fragment = new HomeFragment();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content, fragment, "");
-        fragmentTransaction.commit();
+        String startingFragment = getIntent().getStringExtra("desired_fragment");
+        if(startingFragment != null && startingFragment.equals("chat")){
+            Log.d("DEBUG", "Reading desired fragment and switching");
+            ChatFragment fragment = new ChatFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.content, fragment, "");
+            fragmentTransaction.commit();
+        } else {
+            HomeFragment fragment = new HomeFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.content, fragment, "");
+            fragmentTransaction.commit();
+        }
     }
 
     private final BottomNavigationView.OnItemSelectedListener selectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -56,7 +66,7 @@ public class DashboardActivity extends AppCompatActivity {
             Log.d("SCREEN", "Change screen: "+ menuItem.getItemId() );
             switch (menuItem.getItemId()) {
 
-                case 2131296640:
+                case 2131296641:
                     //  2131231110
                     //actionBar.setTitle("Home");
                     HomeFragment fragment = new HomeFragment();
@@ -65,7 +75,7 @@ public class DashboardActivity extends AppCompatActivity {
                     fragmentTransaction.commit();
                     return true;
 
-                case 2131296643:
+                case 2131296644:
                     //actionBar.setTitle("Users");
                     // 2131231113
                     UsersFragment fragment2 = new UsersFragment();
@@ -74,7 +84,7 @@ public class DashboardActivity extends AppCompatActivity {
                     fragmentTransaction2.commit();
                     return true;
 
-                case 2131296638:
+                case 2131296639:
                     //actionBar.setTitle("Chats");
                     // 2131231107
                     ChatFragment listFragment = new ChatFragment();

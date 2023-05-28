@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.capstone481p.snoozeyoulose.DashboardActivity;
 import com.capstone481p.snoozeyoulose.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -132,7 +134,12 @@ public class ChatActivity extends AppCompatActivity {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                //onBackPressed();
+                Intent intent = new Intent(ChatActivity.this, DashboardActivity.class);
+                intent.putExtra("desired_fragment", "chat");
+                Log.d("DEBUG", "Exiting chat");
+                Log.d("CONTEXT", "Exiting chat activity context: "+getPackageName());
+                startActivity(intent);
             }
         });
 
