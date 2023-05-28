@@ -11,10 +11,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="profile page exists and we can read name and accountability. stuff that we want to communicate through the profile will likely need to go through the GlobalVars file. Will be figuring out how to navigate to the profile page through button or navbar 😊">
+    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="giving nmes to the different pages slay 🤓">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/DashboardActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/DashboardActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/ui/home/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/ui/home/HomeFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/ui/users/ModelUsers.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/ui/users/ModelUsers.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -252,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685253770475</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="giving nmes to the different pages slay 🤓">
+      <created>1685266790860</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1685266790860</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -274,6 +281,7 @@
     <MESSAGE value="Attempt to use AlarmManager and clock to send notifications to friends. Will open but crashed after set alarm button is pressed." />
     <MESSAGE value="Pushing the AlarmReceiver" />
     <MESSAGE value="profile page exists and we can read name and accountability. stuff that we want to communicate through the profile will likely need to go through the GlobalVars file. Will be figuring out how to navigate to the profile page through button or navbar " />
-    <option name="LAST_COMMIT_MESSAGE" value="profile page exists and we can read name and accountability. stuff that we want to communicate through the profile will likely need to go through the GlobalVars file. Will be figuring out how to navigate to the profile page through button or navbar " />
+    <MESSAGE value="giving nmes to the different pages slay " />
+    <option name="LAST_COMMIT_MESSAGE" value="giving nmes to the different pages slay " />
   </component>
 </project>
