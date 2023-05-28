@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.profile.ProfileFragment">
+
+    <TextView
+        android:id="@+id/welcomeUserText"
+        android:layout_width="match_parent"
+        android:layout_height="112dp"
+        android:text="welcome back, user"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/progress"
+        android:layout_width="469dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="112dp"
+        android:text="current progress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+<!--
+    <Button
+        android:id="@+id/logSleepButton"
+        android:layout_width="228dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="268dp"
+        android:text="I'm Awake!"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+-->
+    <TextView
+        android:id="@+id/currentSettings"
+        android:layout_width="match_parent"
+        android:layout_height="224dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="348dp"
+        android:text="current settings info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+<!--
+    <Button
+        android:id="@+id/changeSettings"
+        android:layout_width="230dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="592dp"
+        android:text="Change Settings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

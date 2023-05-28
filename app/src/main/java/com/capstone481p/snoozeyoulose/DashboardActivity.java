@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.capstone481p.snoozeyoulose.ui.chat.ChatFragment;
 import com.capstone481p.snoozeyoulose.ui.home.HomeFragment;
+import com.capstone481p.snoozeyoulose.ui.profile.ProfileFragment;
 import com.capstone481p.snoozeyoulose.ui.users.UsersFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +46,7 @@ public class DashboardActivity extends AppCompatActivity {
         // time the fragment should be shown to the user
         // in this case it is home fragment
         HomeFragment fragment = new HomeFragment();
+        //ProfileFragment fragment = new ProfileFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.content, fragment, "");
         fragmentTransaction.commit();
@@ -56,7 +58,7 @@ public class DashboardActivity extends AppCompatActivity {
             Log.d("SCREEN", "Change screen: "+ menuItem.getItemId() );
             switch (menuItem.getItemId()) {
 
-                case 2131296640:
+                case 2131296641:
                     //  2131231110
                     //actionBar.setTitle("Home");
                     HomeFragment fragment = new HomeFragment();
@@ -65,7 +67,7 @@ public class DashboardActivity extends AppCompatActivity {
                     fragmentTransaction.commit();
                     return true;
 
-                case 2131296643:
+                case 2131296644:
                     //actionBar.setTitle("Users");
                     // 2131231113
                     UsersFragment fragment2 = new UsersFragment();
@@ -74,7 +76,7 @@ public class DashboardActivity extends AppCompatActivity {
                     fragmentTransaction2.commit();
                     return true;
 
-                case 2131296638:
+                case 2131296639:
                     //actionBar.setTitle("Chats");
                     // 2131231107
                     ChatFragment listFragment = new ChatFragment();

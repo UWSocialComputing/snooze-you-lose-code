@@ -54,6 +54,7 @@ import com.capstone481p.snoozeyoulose.MainActivity;
 import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.databinding.FragmentHomeBinding;
 
+import com.capstone481p.snoozeyoulose.ui.GlobalVars;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -82,13 +83,14 @@ import java.util.Calendar;
 
 public class HomeFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    //private FragmentHomeBinding binding;
 
     private TextView tvTimer1, tvTimer2;
     private int t1Hour, t1Minute, t2Hour, t2Minute;
 
     private Button awakeButton;
     private Spinner dropDown;
+    private String dropDownTxt;
     private Context context;
 
     // for alarm manager
@@ -109,7 +111,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        ;
 
         Log.d("CONTEXT", "Context for the fragment: " + getContext().getPackageName());
 
@@ -313,6 +314,9 @@ public class HomeFragment extends Fragment {
 
                                                    // store the value in Database in "Users" Node
                                                    DatabaseReference ref = database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                   dropDownTxt = parent.getItemAtPosition(position).toString();
+                                                   Log.d("Firebase", "spinner: " + dropDownTxt); // Log the accountability for debugging
+                                                   GlobalVars.accountabilityType = dropDownTxt;
                                                    ref.child("accountability").setValue(parent.getItemAtPosition(position).toString());
                                                }
 
