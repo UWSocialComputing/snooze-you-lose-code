@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.capstone481p.snoozeyoulose.ui.chat.ChatFragment;
 import com.capstone481p.snoozeyoulose.ui.home.HomeFragment;
+import com.capstone481p.snoozeyoulose.ui.profile.ProfileFragment;
 import com.capstone481p.snoozeyoulose.ui.users.UsersFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,7 +33,6 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("DEBUG", "Entering Dashboard activity");
         setContentView(R.layout.activity_dashboard);
         actionBar = getSupportActionBar();
         //actionBar.setTitle("Profile Activity");
@@ -67,8 +67,7 @@ public class DashboardActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
 
                 case 2131296641:
-                    //  2131231110
-                    //actionBar.setTitle("Home");
+                    actionBar.setTitle("Home");
                     HomeFragment fragment = new HomeFragment();
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.content, fragment, "");
@@ -76,8 +75,15 @@ public class DashboardActivity extends AppCompatActivity {
                     return true;
 
                 case 2131296644:
-                    //actionBar.setTitle("Users");
-                    // 2131231113
+                    actionBar.setTitle("Profile");
+                    ProfileFragment fragmentP = new ProfileFragment();
+                    FragmentTransaction fragmentTransactionP = getSupportFragmentManager().beginTransaction();
+                    fragmentTransactionP.replace(R.id.content, fragmentP, "");
+                    fragmentTransactionP.commit();
+                    return true;
+
+                case 2131296645:
+                    actionBar.setTitle("Users");
                     UsersFragment fragment2 = new UsersFragment();
                     FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction2.replace(R.id.content, fragment2, "");
@@ -85,8 +91,7 @@ public class DashboardActivity extends AppCompatActivity {
                     return true;
 
                 case 2131296639:
-                    //actionBar.setTitle("Chats");
-                    // 2131231107
+                    actionBar.setTitle("Chats");
                     ChatFragment listFragment = new ChatFragment();
                     FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction3.replace(R.id.content, listFragment, "");

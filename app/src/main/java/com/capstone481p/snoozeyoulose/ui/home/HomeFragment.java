@@ -3,8 +3,12 @@ package com.capstone481p.snoozeyoulose.ui.home;
 import static android.text.format.DateFormat.is24HourFormat;
 import static java.text.DateFormat.*;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,9 +18,15 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +42,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -41,6 +54,7 @@ import com.capstone481p.snoozeyoulose.MainActivity;
 import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.databinding.FragmentHomeBinding;
 
+import com.capstone481p.snoozeyoulose.ui.GlobalVars;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -59,136 +73,113 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TimePicker;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import java.util.Calendar;
 
+import java.util.Calendar;
 
 
 public class HomeFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    //private FragmentHomeBinding binding;
 
-    private TextView tvTimer1, tvTimer2;
+    private TextView tvTimer1, tvTimer2, Timer;
     private int t1Hour, t1Minute, t2Hour, t2Minute;
 
     private Button awakeButton;
     private Spinner dropDown;
+    private String dropDownTxt;
+    private int lastPos;
+
+    private String wakeUpTxt;
+    private String bedTxt;
+
     private Context context;
 
     // for alarm manager
     private static final int ALARM_REQUEST_CODE = 123;
-    private TimePicker timePicker;
-    private Button setAlarmButton;
 
+    private static final int PERMISSION_REQUEST_CODE = 321;
+
+    private TimePicker timePicker;
+    private Button setAlarmButtonW;
+
+    private Button setAlarmButtonB;
+
+    // Notification channel ID and name
+    private static final String CHANNEL_ID = "alarm_channel";
+    private static final String CHANNEL_NAME = "Alarm Channel";
+
+    //for the saving accountability on home
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);;
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Log.d("CONTEXT", "Context for the fragment: "+getContext().getPackageName());
+        Log.d("CONTEXT", "Context for the fragment: " + getContext().getPackageName());
 
         context = getContext();
 
+        createNotificationChannel();
+
         return view;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
         // for time manager
         // Initialize views
-        timePicker = view.findViewById(R.id.timePicker);
-        setAlarmButton = view.findViewById(R.id.setAlarmButton);
-
-
-        // Set click listener for the button
-        setAlarmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setAlarm();
-            }
-
-        });
-
+        setAlarmButtonW = view.findViewById(R.id.setAlarmButtonW);
+        setAlarmButtonB = view.findViewById(R.id.setAlarmButtonB);
 
         tvTimer1 = view.findViewById(R.id.tv_timer1);
         tvTimer2 = view.findViewById(R.id.tv_timer2);
 
+        t1Hour = sharedPreferences.getInt("t1Hour", 12);
+        t1Minute = sharedPreferences.getInt("t1Minute", 0);
+        t2Hour = sharedPreferences.getInt("t2Hour", 12);
+        t2Minute = sharedPreferences.getInt("t2Minute", 0);
+
+
+
+        setAlarmButtonW.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                setAlarm(tvTimer1);
+            }
+        });
+
+        setAlarmButtonB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setAlarm(tvTimer2);
+            }
+        });
         tvTimer1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(
-                        getContext(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                //Initialize hour and minute
-                                t1Hour = hourOfDay;
-                                t1Minute = minute;
-                                //Initialize calendar
-                                Calendar calendar = Calendar.getInstance();
-                                //Set hour and  minute
-                                calendar.set(0, 0, 0, t1Hour, t1Minute);
-                                //Set selected time on text view
-                                tvTimer1.setText(android.text.format.DateFormat.format("hh:mm aa", calendar));
-                            }
-                        }, 12, 0, false
-                );
-                //TODO DELETE THIS IT"S A PUSH TEST FOR BASIA
-                //Displayed previous selected time
-                timePickerDialog.updateTime(t1Hour, t1Minute);
-                //Show dialog
-                timePickerDialog.show();
-//
-//                if (!tvTimer1.equals(null)) {
-//                    Users users = new Users(tvTimer1, tvTimer2);
-//                }
+                showTimePickerDialog(tvTimer1);
             }
         });
 
         tvTimer2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(
-                        getContext(),
-                        android.R.style.Theme_Holo_Dialog_MinWidth,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                //Initialize hour and minute
-                                t2Hour = hourOfDay;
-                                t2Minute = minute;
-                                //Store hour and minute in string
-                                String time = t2Hour + ":" +t2Minute;
-                                //Initialize 24 hours time format
-                                SimpleDateFormat f24Hours = new SimpleDateFormat(
-                                        "HH:mm"
-                                );
-                                try {
-                                    Date date = f24Hours.parse(time);
-                                    //Initialize 12 hours time format
-                                    SimpleDateFormat f12Hours = new SimpleDateFormat(
-                                            "hh:mm aa"
-                                    );
-                                    //Set selected time on text view
-                                    tvTimer2.setText(f12Hours.format(date));
-                                } catch (ParseException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        }, 12, 0, false
-                );
-                //Set transparent background
-                timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                //Displayed previous selected time
-                timePickerDialog.updateTime(t2Hour, t2Minute);
-                //Show dialog
-                timePickerDialog.show();
+                showTimePickerDialog(tvTimer2);
             }
         });
+
 
         awakeButton = view.findViewById(R.id.awake_button);
         awakeButton.setOnClickListener(new View.OnClickListener() {
@@ -200,62 +191,255 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+
+        // Retrieve the last selected position from SharedPreferences
+        lastPos = sharedPreferences.getInt("lastPos", 0);
+
         dropDown = view.findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
                 R.array.accountability_options, android.R.layout.simple_spinner_item);
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                // Apply the adapter to the spinner
-                dropDown.setAdapter(adapter);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        dropDown.setAdapter(adapter);
+
+        // Set the spinner selection to the last selected position
+        Log.d("Firebase", "curr pos: " + lastPos);
+        dropDown.setSelection(lastPos);
         dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-           @Override
-           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               parent.getItemAtPosition(position);
-               FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                               @Override
+                                               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                   parent.getItemAtPosition(position);
+                                                   FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                   lastPos = position;
+                                                   editor.putInt("lastPos", lastPos);
+                                                   editor.apply();
 
-               // store the value in Database in "Users" Node
-               DatabaseReference ref = database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-               ref.child("accountability").setValue(parent.getItemAtPosition(position).toString());
-           }
+                                                   Log.d("Firebase", "new pos: " + lastPos);
 
-           @Override
-           public void onNothingSelected(AdapterView<?> parent) {
-                parent.getFirstVisiblePosition();
-           }
-       }
+                                                   // store the value in Database in "Users" Node
+                                                   DatabaseReference ref = database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                   dropDownTxt = parent.getItemAtPosition(position).toString();
+                                                   Log.d("Firebase", "spinner: " + dropDownTxt); // Log the accountability for debugging
+                                                   GlobalVars.accountabilityType = dropDownTxt;
+                                                   ref.child("accountability").setValue(parent.getItemAtPosition(position).toString());
+                                               }
 
+                                               @Override
+                                               public void onNothingSelected(AdapterView<?> parent) {
+                                                   // dropDown.setSelection(lastPos);
+                                                   Log.d("Firebase", "nothing selected: " + lastPos);
+                                                   dropDown.setSelection(lastPos);
+                                               }
+                                           }
         );
+
+        if (savedInstanceState != null) {
+            lastPos = savedInstanceState.getInt("lastPos", 0); // Restore the last selected position
+            Log.d("Firebase", "old pos: " + lastPos);
+        }
+
     }
 
     /**
      * for alarm manager
      */
-    private void setAlarm() {
 
-        // Get the selected hour and minute from the TimePicker
-        int hour = timePicker.getCurrentHour();
-        int minute = timePicker.getCurrentMinute();
+    private void setAlarm(final TextView textView) {
+        String selectedTime = textView.getText().toString();
+        if (!selectedTime.isEmpty()) {
+            // Extract hour and minute from the selected time
+            int hour = Integer.parseInt(selectedTime.substring(0, 2));
+            int minute = Integer.parseInt(selectedTime.substring(3, 5));
 
-        // Create a Calendar object and set the selected hour and minute
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
+            // Create a calendar instance and set the selected hour and minute
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE, minute);
 
-        // Set up the AlarmManager
-        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(requireContext(), AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
+            // Set up the AlarmManager
+            AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context, AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        // Set the alarm to trigger at the selected time
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            // Set the alarm to trigger at the selected time
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            //alarmManager.setExact();
+
+            Toast.makeText(context, "Alarm Set!", Toast.LENGTH_SHORT).show();
+
+            // Show notification
+            showNotification(calendar, textView);
+        } else {
+            Toast.makeText(context, "Please select a time first.", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    /***
+     * For timePicker
+     */
+
+    private void showTimePickerDialog(final TextView textView) {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                getContext(),
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (textView == tvTimer1) {
+                            t1Hour = hourOfDay;
+                            t1Minute = minute;
+                            editor.putInt("t1Hour", t1Hour);
+                            editor.putInt("t1Minute", t1Minute);
+                        } else if (textView == tvTimer2) {
+                            t2Hour = hourOfDay;
+                            t2Minute = minute;
+                            editor.putInt("t2Hour", t2Hour);
+                            editor.putInt("t2Minute", t2Minute);
+                        }
+                        editor.apply();
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        //calendar.set(0, 0, 0, t1Hour, t1Minute);
+
+                        Log.d("AlarmTime", "Calendar time in millis: " + calendar.getTimeInMillis());
+                        textView.setText(android.text.format.DateFormat.format("hh:mm aa", calendar));
+
+                        String tempT1 = String.valueOf(t1Hour);
+                        if (t1Hour < 10) {
+                            tempT1 = "0" + t1Hour;
+                        }
+                        if (t1Minute < 10) {
+                            tempT1 += ":0" + t1Minute;
+                        } else {
+                            tempT1 += ":" + t1Minute;
+                        }
+
+                        String tempT2 = String.valueOf(t2Hour);
+                        if (t2Hour < 10) {
+                            tempT2 = "0" + t2Hour;
+                        }
+                        if (t2Minute < 10) {
+                            tempT2 += ":0" + t2Minute;
+                        } else {
+                            tempT2 += ":" + t2Minute;
+                        }
+                        wakeUpTxt = tempT1;
+                        bedTxt = tempT2;
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                        Log.d("Firebase", "times: " + wakeUpTxt + " & " + bedTxt);
+
+                        // store the value in Database in "Users" Node
+                        DatabaseReference ref = database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        ref.child("bedTime").setValue(bedTxt);
+                        ref.child("wakeupTime").setValue(wakeUpTxt);
+                    }
+                },
+                12, 0, false
+        );
+        if (textView == tvTimer1) {
+            timePickerDialog.updateTime(t1Hour, t1Minute);
+        } else if (textView == tvTimer2) {
+            timePickerDialog.updateTime(t2Hour, t2Minute);
+        }
+
+        timePickerDialog.show();
+    }
+
+
+    private void showNotification(Calendar calendar, TextView textView) {
+        // Create an explicit intent for the activity to be launched when the notification is clicked
+        Intent notificationIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        // Create the notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.baseline_notifications_24)
+                .setContentTitle("Alarm")
+                .setContentText("It's time to wake up!")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        // Play default notification sound
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);
+
+        // Set notification color
+        builder.setColor(Color.RED);
+
+        Toast.makeText(context, "showNotification() called", Toast.LENGTH_SHORT).show(); // Display a Toast message
+
+
+        // Show the notification
+        Timer = textView;
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted, request it
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+                Toast.makeText(context, "Requesting permission", Toast.LENGTH_SHORT).show();
+            } else {
+                notificationManager.notify(ALARM_REQUEST_CODE, builder.build());
+            }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission is granted, proceed
+                setAlarm(Timer);
+            } else {
+                // Permission is denied, handle accordingly
+                Toast.makeText(context, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+            channel.enableVibration(true);
+
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("lastPos", lastPos); // Save the last selected position
+        Log.d("Firebase", "lastpos: " + lastPos);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            lastPos = savedInstanceState.getInt("lastPos", 0);
+            if (dropDown != null) {
+                dropDown.setSelection(lastPos);
+            }
+        }
     }
 
     public void awakeMessage() {

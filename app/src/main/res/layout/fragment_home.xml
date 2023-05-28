@@ -29,22 +29,17 @@
     android:padding= "16dp">
 
 
-    <TimePicker
+  <!-- <TimePicker
         android:id="@+id/timePicker"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/setAlarmButton"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set Alarm" />
+       /> -->
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="WakeUptime"
+        android:text="Wake Up time"
         android:textSize="32sp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -63,7 +58,16 @@
         android:hint="SetWakeupTime"
         android:textSize="32sp"
         android:textStyle="bold"
-        app:drawableTopCompat="@drawable/baseline_access_time_24" />
+        app:drawableTopCompat="@drawable/baseline_access_time_24"
+
+        />
+
+
+    <Button
+        android:id="@+id/setAlarmButtonW"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Set Alarm" />
 
     <TextView
         android:layout_width="match_parent"
@@ -77,9 +81,9 @@
         />
 
     <TextView
+        android:id="@+id/tv_timer2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_timer2"
         android:text="SetBedtime"
         android:textSize="32sp"
         android:textStyle="bold"
@@ -88,6 +92,12 @@
         android:layout_marginTop="16dp"
         android:background="@android:drawable/editbox_background"
         app:drawableTopCompat="@drawable/baseline_access_time_24" />
+
+  <Button
+      android:id="@+id/setAlarmButtonB"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Set Alarm" />
 
     <Space
         android:layout_width="367dp"
