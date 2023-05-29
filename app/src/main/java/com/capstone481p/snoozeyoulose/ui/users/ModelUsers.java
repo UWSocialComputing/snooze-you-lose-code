@@ -59,6 +59,10 @@ public class ModelUsers {
     public void setWakeupTime(String wakeupTime) { this.wakeupTime = wakeupTime; }
     public String getWakeupTime() { return wakeupTime; }
 
+    public void setOnlineStatus(String onlineStatus){this.onlineStatus = onlineStatus;}
+
+    public String getOnlineStatus(){return onlineStatus;}
+
     public ModelUsers(String name, String onlineStatus, String typingTo, String email, String image, String uid, String accountability, String bedTime, String wakeupTime) {
         this.name = name;
         this.onlineStatus = onlineStatus;

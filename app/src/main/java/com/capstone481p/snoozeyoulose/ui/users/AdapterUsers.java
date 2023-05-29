@@ -67,7 +67,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
                 DatabaseReference reference = database.getReference("ChatList");
 
                 // storing the value in Firebase
-                reference.child(uid).setValue(hisuid);
+                reference.child(uid).child(hisuid).child("id").setValue(hisuid);
                 Intent intent = new Intent(context, ChatActivity.class);
 
                 // putting uid of user in extras

@@ -40,17 +40,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="HisName"
+                    android:text="Name"
+                    android:layout_marginTop="5dp"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/onlinetv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Online"
-                    android:textColor="@color/white"
                     android:textStyle="bold" />
 
             </LinearLayout>
