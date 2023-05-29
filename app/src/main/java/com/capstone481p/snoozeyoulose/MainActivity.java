@@ -174,6 +174,9 @@ public class MainActivity extends AppCompatActivity {
         hashMap.put("accountability", "");
         hashMap.put("bedTime", "");
         hashMap.put("wakeupTime", "");
+        hashMap.put("awakeCount", "0");
+        hashMap.put("sleepCount", "0");
+        hashMap.put("counter", "0");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         // store the value in Database in "Users" Node

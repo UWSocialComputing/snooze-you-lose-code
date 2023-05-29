@@ -1,6 +1,7 @@
 package com.capstone481p.snoozeyoulose.ui.profile;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,13 @@ public class ProfileFragment extends Fragment {
     private String bedTime;
     private String accountability;
 
+    private String awakeCount;
+    private String sleepCount;
+    private String counter;
+
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +57,13 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+//        awakeCount = sharedPreferences.getString("awakeCount", "0");
+//        sleepCount = sharedPreferences.getString("sleepCount", "0");
+//        counter = sharedPreferences.getString("counter", "0");
+
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -59,6 +74,9 @@ public class ProfileFragment extends Fragment {
                 userName = snapshot.child("name").getValue(String.class);
                 bedTime = snapshot.child("bedTime").getValue(String.class);
                 wakeUpTime = snapshot.child("wakeupTime").getValue(String.class);
+                awakeCount = snapshot.child("awakeCount").getValue(String.class);
+                sleepCount = snapshot.child("sleepCount").getValue(String.class);
+                counter = snapshot.child("counter").getValue(String.class);
                 Log.d("Firebase", "UserName: " + userName); // Log the retrieved username
                 Log.d("Firebase", "accountability: " + GlobalVars.accountabilityType); // Log the retrieved username
                 TextView welcomeUserText = view.findViewById(R.id.welcomeUserText);
@@ -70,6 +88,26 @@ public class ProfileFragment extends Fragment {
                         "BedTime:\t\t" + bedTime + "\n" +
                         "Accountability:\t\t" + GlobalVars.accountabilityType;
                 currentSettings.setText(multiTxt);
+
+                int tempAwakeNum = Integer.valueOf(awakeCount);
+                int tempSleepNum = Integer.valueOf(sleepCount);
+                int tempCountNum;
+                if (tempAwakeNum == tempSleepNum) {
+                    tempCountNum = tempAwakeNum;
+                } else {
+                    tempCountNum = Math.min(tempAwakeNum, tempSleepNum);
+                }
+                counter = String.valueOf(tempCountNum);
+                ref.child("counter").setValue(counter);
+                editor.putString("counter", counter);
+                editor.apply();
+
+                TextView currentProgress = view.findViewById(R.id.progress);
+                String progressTxt = "Current Progress\n" +
+                        "Total Cycles: " + counter + "\n" +
+                        "Woken Up " + awakeCount + " times\n" +
+                        "Slept " + sleepCount + " times";
+                currentProgress.setText(progressTxt);
             }
 
             @Override
@@ -84,6 +122,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 awakeMessage();
+                String tempAwake = String.valueOf(Integer.valueOf(awakeCount) + 1);
+                awakeCount = tempAwake;
+                ref.child("awakeCount").setValue(tempAwake);
+                editor.putString("awakeCount", awakeCount);
+                editor.apply();
             }
         });
 
@@ -92,6 +135,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 sleepMessage();
+                String tempSleep = String.valueOf(Integer.valueOf(sleepCount) + 1);
+                sleepCount = tempSleep;
+                ref.child("sleepCount").setValue(tempSleep);
+                editor.putString("sleepCount", sleepCount);
+                editor.apply();
             }
         });
     }
