@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.ui.GlobalVars;
@@ -27,7 +28,7 @@ public class ProfileFragment extends Fragment {
 
     private Context context;
     private Button awakeButton;
-    private Button settingsButton;
+    private Button sleepButton;
     private String userName;
     private String wakeUpTime;
     private String bedTime;
@@ -77,6 +78,30 @@ public class ProfileFragment extends Fragment {
                 accountability = "could not retrieve accountability";
             }
         });
+
+        awakeButton = view.findViewById(R.id.awakeButton);
+        awakeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                awakeMessage();
+            }
+        });
+
+        sleepButton = view.findViewById(R.id.sleepButton);
+        sleepButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sleepMessage();
+            }
+        });
+    }
+
+    public void awakeMessage() {
+        Toast.makeText(context, "Congrats on waking up!\nRemember to slay the day 💅", Toast.LENGTH_SHORT).show();
+    }
+
+    public void sleepMessage() {
+        Toast.makeText(context, "Remember to get that beauty sleep\nand go to bed soon 😪", Toast.LENGTH_SHORT).show();
     }
 
     @Override

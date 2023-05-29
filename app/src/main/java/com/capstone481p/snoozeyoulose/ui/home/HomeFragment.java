@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
     private int t1Hour, t1Minute, t2Hour, t2Minute;
     private int initialHour, initialMinute;
 
-    private Button awakeButton;
+    //private Button awakeButton;
     private Spinner dropDown;
     private String dropDownTxt;
     private int lastPos;
@@ -198,15 +198,15 @@ public class HomeFragment extends Fragment {
         });
 
 
-        awakeButton = view.findViewById(R.id.awake_button);
-        awakeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle button click here
-                // You can communicate with the main activity or perform any desired action
-                awakeMessage();
-            }
-        });
+//        awakeButton = view.findViewById(R.id.awake_button);
+//        awakeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Handle button click here
+//                // You can communicate with the main activity or perform any desired action
+//                awakeMessage();
+//            }
+//        });
 
 
 
@@ -479,7 +479,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void awakeMessage() {
-        Toast.makeText(context, "Congrats on waking up! Remember to rate your sleep", Toast.LENGTH_SHORT).show();
-    }
+//    public void awakeMessage() {
+//        Toast.makeText(context, "Congrats on waking up! Remember to rate your sleep", Toast.LENGTH_SHORT).show();
+//    }
 }
