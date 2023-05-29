@@ -122,6 +122,7 @@ public class HomeFragment extends Fragment {
 
         context = getContext();
 
+
         createNotificationChannel();
 
         return view;
@@ -147,8 +148,6 @@ public class HomeFragment extends Fragment {
         t1Minute = sharedPreferences.getInt("t1Minute", 0);
         t2Hour = sharedPreferences.getInt("t2Hour", 12);
         t2Minute = sharedPreferences.getInt("t2Minute", 0);
-
-
 
         setAlarmButtonW.setOnClickListener(new View.OnClickListener() {
 
@@ -246,22 +245,33 @@ public class HomeFragment extends Fragment {
      */
 
     private void setAlarm(final TextView textView) {
+
         String selectedTime = textView.getText().toString();
+
+        // differentiate between alarm types, true if bedtime, false if wake up
+        boolean isBedtimeAlarm = textView.getId() != R.id.tv_timer1;
+
         if (!selectedTime.isEmpty()) {
             // Extract hour and minute from the selected time
             int hour = Integer.parseInt(selectedTime.substring(0, 2));
             int minute = Integer.parseInt(selectedTime.substring(3, 5));
-            if(selectedTime.contains("PM"))
-                hour +=12;
+
+            // Handle conversion to 24 hr time
+            if(selectedTime.contains("PM") && hour != 12) {
+                hour += 12;
+            } else if (selectedTime.contains("AM") && hour == 12){
+                hour = 0;
+            }
 
 
-            Log.d("TIME_DEBUG", "Time: "+hour+":"+minute);
+            Log.d("TIME_DEBUG", "Time: "+hour+":"+minute+", Contains PM: "+selectedTime.contains("PM")
+                    +", Contains AM: "+selectedTime.contains("AM"));
 
             // Create a calendar instance and set the selected hour and minute
             Calendar calendar = Calendar.getInstance();
-            //calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
+            calendar.set(Calendar.SECOND, 0);
 
             Log.d("TIME_DEBUG", "Calendar val: "+calendar.getTime());
             Log.d("TIME_DEBUG", "Calendar ms: " +calendar.getTimeInMillis());
@@ -269,16 +279,20 @@ public class HomeFragment extends Fragment {
             // Set up the AlarmManager
             AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+
+            // Send alarm type boolean with intent
+            intent.putExtra("alarm_type",isBedtimeAlarm);
+
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
 
             // Set the alarm to trigger at the selected time
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            //alarmManager.setExact();
 
             Toast.makeText(context, "Alarm Set!", Toast.LENGTH_SHORT).show();
 
             // Show notification
-            //showNotification(calendar, textView);
+            // Note: Notification creation is currently being done in alarm receiver, in the future
+            // it may be best to place it somewhere else
         } else {
             Toast.makeText(context, "Please select a time first.", Toast.LENGTH_SHORT).show();
         }
@@ -359,8 +373,8 @@ public class HomeFragment extends Fragment {
 
 
     private void showNotification(Calendar calendar, TextView textView) {
-        // Create an explicit intent for the activity to be launched when the notification is clicked
 
+        // Create an explicit intent for the activity to be launched when the notification is clicked
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted, request it

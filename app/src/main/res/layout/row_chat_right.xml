@@ -37,8 +37,8 @@
             android:layout_toEndOf="@id/timetv"
             android:background="@drawable/msg_back_right"
             android:padding="15dp"
-            android:text="His Message"
-            android:textColor="@color/black"
+            android:text="Message"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <ImageView

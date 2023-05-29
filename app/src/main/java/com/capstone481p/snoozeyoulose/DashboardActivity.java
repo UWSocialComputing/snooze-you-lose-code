@@ -40,19 +40,21 @@ public class DashboardActivity extends AppCompatActivity {
 
         navigationView = findViewById(R.id.navigation);
         navigationView.setOnItemSelectedListener(selectedListener);
-        actionBar.setTitle("Home");
 
         // When we open the application first
         // time the fragment should be shown to the user
         // in this case it is home fragment
         String startingFragment = getIntent().getStringExtra("desired_fragment");
         if(startingFragment != null && startingFragment.equals("chat")){
+            actionBar.setTitle("Chats");
+            navigationView.setSelectedItemId(R.id.nav_chat);
             Log.d("DEBUG", "Reading desired fragment and switching");
             ChatFragment fragment = new ChatFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.content, fragment, "");
             fragmentTransaction.commit();
         } else {
+            actionBar.setTitle("Home");
             HomeFragment fragment = new HomeFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.content, fragment, "");
