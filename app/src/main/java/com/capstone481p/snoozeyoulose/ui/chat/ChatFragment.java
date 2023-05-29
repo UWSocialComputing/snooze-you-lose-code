@@ -1,10 +1,13 @@
 package com.capstone481p.snoozeyoulose.ui.chat;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.capstone481p.snoozeyoulose.R;
+import com.capstone481p.snoozeyoulose.ui.users.AddUserActivity;
 import com.capstone481p.snoozeyoulose.ui.users.ModelUsers;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,11 +50,13 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        Log.d("DEBUG", "Creating chat view");
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         firebaseAuth = FirebaseAuth.getInstance();
 
-
+        Button addNew = view.findViewById(R.id.button3);
 
         // getting current user
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -77,19 +83,31 @@ public class ChatFragment extends Fragment {
 
             }
         });
-        return view;
 
+        addNew.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddUserActivity.class);
+                Log.d("CONTEXT", "Chat frag context (add button): "+getActivity().getPackageName());
+                getActivity().startActivity(intent);
+            }
+        });
+
+        return view;
     }
 
     // loading the user chat layout using chat node
     private void loadChats() {
         usersList = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Users");
+        Log.d("DEBUG", "loading chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usersList.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
                     com.capstone481p.snoozeyoulose.ui.users.ModelUsers user = dataSnapshot1.getValue(com.capstone481p.snoozeyoulose.ui.users.ModelUsers.class);
                     for (ModelChatList chatList : chatListList) {
                         assert user != null;

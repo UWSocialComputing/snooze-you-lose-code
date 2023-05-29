@@ -99,9 +99,9 @@ public class HomeFragment extends Fragment {
     private Context context;
 
     // for alarm manager
-    private static final int ALARM_REQUEST_CODE = 123;
+    private static final int ALARM_REQUEST_CODE = 0;
 
-    private static final int PERMISSION_REQUEST_CODE = 321;
+    private static final int PERMISSION_REQUEST_CODE = 0;
 
     private TimePicker timePicker;
     private Button setAlarmButtonW;
@@ -119,8 +119,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        Log.d("CONTEXT", "Context for the fragment: " + getContext().getPackageName());
 
         context = getContext();
 
@@ -253,16 +251,25 @@ public class HomeFragment extends Fragment {
             // Extract hour and minute from the selected time
             int hour = Integer.parseInt(selectedTime.substring(0, 2));
             int minute = Integer.parseInt(selectedTime.substring(3, 5));
+            if(selectedTime.contains("PM"))
+                hour +=12;
+
+
+            Log.d("TIME_DEBUG", "Time: "+hour+":"+minute);
 
             // Create a calendar instance and set the selected hour and minute
             Calendar calendar = Calendar.getInstance();
+            //calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
 
+            Log.d("TIME_DEBUG", "Calendar val: "+calendar.getTime());
+            Log.d("TIME_DEBUG", "Calendar ms: " +calendar.getTimeInMillis());
+
             // Set up the AlarmManager
             AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(context, AlarmReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
+            Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
 
             // Set the alarm to trigger at the selected time
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
@@ -271,7 +278,7 @@ public class HomeFragment extends Fragment {
             Toast.makeText(context, "Alarm Set!", Toast.LENGTH_SHORT).show();
 
             // Show notification
-            showNotification(calendar, textView);
+            //showNotification(calendar, textView);
         } else {
             Toast.makeText(context, "Please select a time first.", Toast.LENGTH_SHORT).show();
         }
@@ -353,6 +360,14 @@ public class HomeFragment extends Fragment {
 
     private void showNotification(Calendar calendar, TextView textView) {
         // Create an explicit intent for the activity to be launched when the notification is clicked
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, request it
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+            Toast.makeText(context, "Requesting permission", Toast.LENGTH_SHORT).show();
+        }
+
         Intent notificationIntent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
@@ -377,14 +392,7 @@ public class HomeFragment extends Fragment {
 
         // Show the notification
         Timer = textView;
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                // Permission is not granted, request it
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
-                Toast.makeText(context, "Requesting permission", Toast.LENGTH_SHORT).show();
-            } else {
-                notificationManager.notify(ALARM_REQUEST_CODE, builder.build());
-            }
+        notificationManager.notify(ALARM_REQUEST_CODE, builder.build());
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

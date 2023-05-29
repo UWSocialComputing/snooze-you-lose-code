@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.capstone481p.snoozeyoulose.DashboardActivity;
 import com.capstone481p.snoozeyoulose.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,7 +59,7 @@ import java.util.List;
 public class ChatActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
-    ImageView profile, block;
+    ImageView profile, close;
     TextView name, userstatus;
     EditText msg;
     ImageButton send, attach;
@@ -77,7 +79,6 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference users;
     boolean notify = false;
-    boolean isBlocked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +87,14 @@ public class ChatActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         // initialise the text views and layouts
+        // TODO: Add back button
         profile = findViewById(R.id.profiletv);
         name = findViewById(R.id.nameptv);
-        userstatus = findViewById(R.id.onlinetv);
+        //userstatus = findViewById(R.id.onlinetv);
+        close = findViewById(R.id.close_chat);
         msg = findViewById(R.id.messaget);
         send = findViewById(R.id.sendmsg);
         attach = findViewById(R.id.attachbtn);
-        block = findViewById(R.id.block);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView = findViewById(R.id.chatrecycle);
@@ -129,6 +131,18 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //onBackPressed();
+                Intent intent = new Intent(ChatActivity.this, DashboardActivity.class);
+                intent.putExtra("desired_fragment", "chat");
+                Log.d("DEBUG", "Exiting chat");
+                Log.d("CONTEXT", "Exiting chat activity context: "+getPackageName());
+                startActivity(intent);
+            }
+        });
+
         Query userquery = users.orderByChild("uid").equalTo(uid);
         userquery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -137,20 +151,20 @@ public class ChatActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     String nameh = "" + dataSnapshot1.child("name").getValue();
                     image = "" + dataSnapshot1.child("image").getValue();
-                    String onlinestatus = "" + dataSnapshot1.child("onlineStatus").getValue();
-                    String typingto = "" + dataSnapshot1.child("typingTo").getValue();
-                    if (typingto.equals(myuid)) {// if user is typing to my chat
-                        userstatus.setText("Typing....");// type status as typing
-                    } else {
-                        if (onlinestatus.equals("online")) {
-                            userstatus.setText(onlinestatus);
-                        } else {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTimeInMillis(Long.parseLong(onlinestatus));
-                            String timedate = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
-                            userstatus.setText("Last Seen:" + timedate);
-                        }
-                    }
+                    //String onlinestatus = "" + dataSnapshot1.child("onlineStatus").getValue();
+                    // String typingto = "" + dataSnapshot1.child("typingTo").getValue();
+//                    if (typingto.equals(myuid)) {// if user is typing to my chat
+//                        userstatus.setText("Typing....");// type status as typing
+//                    } else {
+//                        if (onlinestatus.equals("online")) {
+//                            userstatus.setText(onlinestatus);
+//                        } else {
+//                            Calendar calendar = Calendar.getInstance();
+//                            calendar.setTimeInMillis(Long.parseLong(onlinestatus));
+//                            String timedate = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
+//                            userstatus.setText("Last Seen:" + timedate);
+//                        }
+//                    }
                     name.setText(nameh);
                     try {
                         Glide.with(ChatActivity.this).load(image).placeholder(R.drawable.baseline_star_24).into(profile);
@@ -173,13 +187,13 @@ public class ChatActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         String timestamp = String.valueOf(System.currentTimeMillis());
-        checkOnlineStatus(timestamp);
-        checkTypingStatus("noOne");
+        //checkOnlineStatus(timestamp);
+        //checkTypingStatus("noOne");
     }
 
     @Override
     protected void onResume() {
-        checkOnlineStatus("online");
+        //checkOnlineStatus("online");
         super.onResume();
     }
 
@@ -189,25 +203,25 @@ public class ChatActivity extends AppCompatActivity {
         return super.onSupportNavigateUp();
     }
 
-    private void checkOnlineStatus(String status) {
-        // check online status
-        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Users").child(myuid);
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("onlineStatus", status);
-        dbref.updateChildren(hashMap);
-    }
+//    private void checkOnlineStatus(String status) {
+//        // check online status
+//        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Users").child(myuid);
+//        HashMap<String, Object> hashMap = new HashMap<>();
+//        hashMap.put("onlineStatus", status);
+//        dbref.updateChildren(hashMap);
+//    }
 
-    private void checkTypingStatus(String typing) {
-        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Users").child(myuid);
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("typingTo", typing);
-        dbref.updateChildren(hashMap);
-    }
+//    private void checkTypingStatus(String typing) {
+//        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Users").child(myuid);
+//        HashMap<String, Object> hashMap = new HashMap<>();
+//        hashMap.put("typingTo", typing);
+//        dbref.updateChildren(hashMap);
+//    }
 
     @Override
     protected void onStart() {
-        checkUserStatus();
-        checkOnlineStatus("online");
+        //checkUserStatus();
+        //checkOnlineStatus("online");
         super.onStart();
     }
 
