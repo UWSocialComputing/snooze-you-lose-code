@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -87,8 +88,9 @@ public class HomeFragment extends Fragment {
 
     private TextView tvTimer1, tvTimer2, Timer;
     private int t1Hour, t1Minute, t2Hour, t2Minute;
+    private int initialHour, initialMinute;
 
-    private Button awakeButton;
+    //private Button awakeButton;
     private Spinner dropDown;
     private String dropDownTxt;
     private int lastPos;
@@ -163,6 +165,25 @@ public class HomeFragment extends Fragment {
                 setAlarm(tvTimer2);
             }
         });
+
+        // Set the initial time values in the TextViews
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(Calendar.HOUR_OF_DAY, t1Hour);
+        calendar1.set(Calendar.MINUTE, t1Minute);
+        tvTimer1.setText(android.text.format.DateFormat.format("hh:mm aa", calendar1));
+
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.set(Calendar.HOUR_OF_DAY, t2Hour);
+        calendar2.set(Calendar.MINUTE, t2Minute);
+        tvTimer2.setText(android.text.format.DateFormat.format("hh:mm aa", calendar2));
+
+        String wakeTemp = (String) android.text.format.DateFormat.format("hh:mm aa", calendar1);
+        String bedTemp = (String) android.text.format.DateFormat.format("hh:mm aa", calendar2);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ref.child("wakeupTime").setValue(wakeTemp);
+        ref.child("bedTime").setValue(bedTemp);
+
         tvTimer1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,15 +199,15 @@ public class HomeFragment extends Fragment {
         });
 
 
-        awakeButton = view.findViewById(R.id.awake_button);
-        awakeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle button click here
-                // You can communicate with the main activity or perform any desired action
-                awakeMessage();
-            }
-        });
+//        awakeButton = view.findViewById(R.id.awake_button);
+//        awakeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Handle button click here
+//                // You can communicate with the main activity or perform any desired action
+//                awakeMessage();
+//            }
+//        });
 
 
 
@@ -303,8 +324,18 @@ public class HomeFragment extends Fragment {
      */
 
     private void showTimePickerDialog(final TextView textView) {
+
+        if (textView == tvTimer1) {
+            initialHour = t1Hour;
+            initialMinute = t1Minute;
+        } else if (textView == tvTimer2) {
+            initialHour = t2Hour;
+            initialMinute = t2Minute;
+        }
+
         TimePickerDialog timePickerDialog = new TimePickerDialog(
                 getContext(),
+
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -360,7 +391,7 @@ public class HomeFragment extends Fragment {
                         ref.child("wakeupTime").setValue(wakeUpTxt);
                     }
                 },
-                12, 0, false
+                initialHour, initialMinute, false
         );
         if (textView == tvTimer1) {
             timePickerDialog.updateTime(t1Hour, t1Minute);
@@ -464,7 +495,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void awakeMessage() {
-        Toast.makeText(context, "Congrats on waking up! Remember to rate your sleep", Toast.LENGTH_SHORT).show();
-    }
+//    public void awakeMessage() {
+//        Toast.makeText(context, "Congrats on waking up! Remember to rate your sleep", Toast.LENGTH_SHORT).show();
+//    }
 }
