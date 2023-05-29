@@ -150,8 +150,6 @@ public class HomeFragment extends Fragment {
         t2Hour = sharedPreferences.getInt("t2Hour", 12);
         t2Minute = sharedPreferences.getInt("t2Minute", 0);
 
-
-
         setAlarmButtonW.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -177,6 +175,13 @@ public class HomeFragment extends Fragment {
         calendar2.set(Calendar.HOUR_OF_DAY, t2Hour);
         calendar2.set(Calendar.MINUTE, t2Minute);
         tvTimer2.setText(android.text.format.DateFormat.format("hh:mm aa", calendar2));
+
+        String wakeTemp = (String) android.text.format.DateFormat.format("hh:mm aa", calendar1);
+        String bedTemp = (String) android.text.format.DateFormat.format("hh:mm aa", calendar2);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ref.child("wakeupTime").setValue(wakeTemp);
+        ref.child("bedTime").setValue(bedTemp);
 
         tvTimer1.setOnClickListener(new View.OnClickListener() {
             @Override
