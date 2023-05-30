@@ -135,12 +135,12 @@ public class AlarmReceiver extends BroadcastReceiver {
                 // Only sends a text if the correct accountability method is selected
                 if(sendText[0].equals("t")) {
 
-                    String wakeup_message = " to wake up!" +
+                    String wakeup_message = " to wake up! " +
                             "Could you check in on them and make sure they're meeting their goal?";
 
                     String bedtime_message = " to go to bed! " +
-                            "Please don't send them any messages unless you need to remind them "+
-                            "to stick to their goal.";
+                            "If you see that they are still on their phone, please to remind them "+
+                            "to stick to their goal and get some sleep.";
 
                     String message = "Hello! It is time for your friend " + sendText[1];
 

@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,16 @@ import android.widget.Toast;
 
 import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.ui.GlobalVars;
+import com.capstone481p.snoozeyoulose.ui.chat.ModelChatList;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class ProfileFragment extends Fragment {
 
@@ -145,11 +150,99 @@ public class ProfileFragment extends Fragment {
     }
 
     public void awakeMessage() {
-        Toast.makeText(context, "Congrats on waking up!\nRemember to slay the day 💅", Toast.LENGTH_SHORT).show();
+        String message = "Congrats on waking up! Remember to slay the day 💅. " +
+                "Do want to share that you've achieved this goal with friends?";
+
+        // Creates a popup with a share button
+        Snackbar snack = Snackbar.make(awakeButton, message, Snackbar.LENGTH_SHORT).setAction("Share", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("ChatList");
+
+                // Gets "friends" from chat list
+                ref1.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        DataSnapshot ds = dataSnapshot.child(uid);
+
+                        String finalMessage = "I woke up on time today! Thanks for helping me improve my routine!";
+
+                        for (DataSnapshot ds2 : ds.getChildren()) {
+                            ModelChatList friend = ds2.getValue(ModelChatList.class);
+                            DatabaseReference ref3 = FirebaseDatabase.getInstance().getReference();
+                            String timestamp = String.valueOf(System.currentTimeMillis());
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("sender", uid);
+                            hashMap.put("receiver", friend.getId());
+                            hashMap.put("message", finalMessage);
+                            hashMap.put("timestamp", timestamp);
+                            hashMap.put("dilihat", false);
+                            hashMap.put("type", "text");
+                            ref3.child("Chats").push().setValue(hashMap);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+
+        snack.setTextMaxLines(7);
+        snack.show();
+        //Toast.makeText(context, "Congrats on waking up!\nRemember to slay the day 💅", Toast.LENGTH_SHORT).show();
     }
 
     public void sleepMessage() {
-        Toast.makeText(context, "Remember to get that beauty sleep\nand go to bed soon 😪", Toast.LENGTH_SHORT).show();
+        String message = "Remember to get that beauty sleep and go to bed soon 😪. "+
+                "Do want to share that you've achieved this goal with friends?";
+
+        // Creates a popup with a share button
+        Snackbar snack = Snackbar.make(awakeButton, message, Snackbar.LENGTH_LONG).setAction("Share", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("ChatList");
+
+                // Gets "friends" from chat list
+                ref1.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        DataSnapshot ds = dataSnapshot.child(uid);
+
+                        String finalMessage = "I'm going to bed now and turning off my phone! Please "
+                                + "don't send me any messages that could keep me up!";
+
+                        for (DataSnapshot ds2 : ds.getChildren()) {
+                            ModelChatList friend = ds2.getValue(ModelChatList.class);
+                            DatabaseReference ref3 = FirebaseDatabase.getInstance().getReference();
+                            String timestamp = String.valueOf(System.currentTimeMillis());
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("sender", uid);
+                            hashMap.put("receiver", friend.getId());
+                            hashMap.put("message", finalMessage);
+                            hashMap.put("timestamp", timestamp);
+                            hashMap.put("dilihat", false);
+                            hashMap.put("type", "text");
+                            ref3.child("Chats").push().setValue(hashMap);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+        snack.setTextMaxLines(7);
+        snack.show();
+        //Toast.makeText(context, "Remember to get that beauty sleep\nand go to bed soon 😪", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -54,8 +54,9 @@ public class DashboardActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.content, fragment, "");
             fragmentTransaction.commit();
         } else {
-            actionBar.setTitle("Home");
-            HomeFragment fragment = new HomeFragment();
+            actionBar.setTitle("Profile");
+            navigationView.setSelectedItemId(R.id.nav_profile);
+            ProfileFragment fragment = new ProfileFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.content, fragment, "");
             fragmentTransaction.commit();
