@@ -11,10 +11,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="moved buttons to profile -- including wake up and new sleep button and their respective messages 💪">
+    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="divider stuff is working now although the lines are lowkey ugly (too thin and color isn't great but that will be fixed hopefully!) 😅">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/DashboardActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/DashboardActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/ui/profile/ProfileFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/capstone481p/snoozeyoulose/ui/profile/ProfileFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_profile.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,7 +80,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2Pi9rC1q4FB06eCvXGCrzly2NtS" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -288,7 +286,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685394012242</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="divider stuff is working now although the lines are lowkey ugly (too thin and color isn't great but that will be fixed hopefully!) 😅">
+      <created>1685421177972</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1685421177972</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -315,6 +320,7 @@
     <MESSAGE value="initial time now saved and accessible on startup from db!! " />
     <MESSAGE value="moved buttons to profile -- including wake up and new sleep button and their respective messages " />
     <MESSAGE value="Worked on the home UI, have changed the font and added a theme." />
-    <option name="LAST_COMMIT_MESSAGE" value="Worked on the home UI, have changed the font and added a theme." />
+    <MESSAGE value="divider stuff is working now although the lines are lowkey ugly (too thin and color isn't great but that will be fixed hopefully!) " />
+    <option name="LAST_COMMIT_MESSAGE" value="divider stuff is working now although the lines are lowkey ugly (too thin and color isn't great but that will be fixed hopefully!) " />
   </component>
 </project>
