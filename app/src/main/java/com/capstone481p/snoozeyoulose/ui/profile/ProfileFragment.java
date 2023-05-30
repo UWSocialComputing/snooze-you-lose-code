@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+
+import org.w3c.dom.Text;
 
 public class ProfileFragment extends Fragment {
 
@@ -88,11 +91,29 @@ public class ProfileFragment extends Fragment {
                 welcomeUserText.setText("Welcome back, " + userName);
 
                 // accountability = snapshot.child("accountability").getValue(String.class);
+                // setting the default text views for settings
                 TextView currentSettings = view.findViewById(R.id.currentSettings);
-                String multiTxt = "Wake Up Time:\t\t" + wakeUpTime +"\n" +
-                        "BedTime:\t\t" + bedTime + "\n" +
-                        "Accountability:\t\t" + GlobalVars.accountabilityType;
-                currentSettings.setText(multiTxt);
+                currentSettings.setText("current settings info");
+                TextView wakeupTimeTxt = view.findViewById(R.id.wakeupTimeTxt);
+                wakeupTimeTxt.setText("wakeup time");
+                TextView bedTimeTxt = view.findViewById(R.id.bedTimeTxt);
+                bedTimeTxt.setText("bed time");
+                TextView accountabilityTxt = view.findViewById(R.id.accountabilityTxt);
+                accountabilityTxt.setText("accountability type");
+
+                // making and setting the variable text views for settings
+                TextView wakeupTimeNum = view.findViewById(R.id.wakeupTimeNum);
+                wakeupTimeNum.setText(wakeUpTime);
+                TextView bedTimeNum = view.findViewById(R.id.bedTimeNum);
+                bedTimeNum.setText(bedTime);
+                TextView accountabilitySelected = view.findViewById(R.id.accountabilitySelected);
+                accountabilitySelected.setText(GlobalVars.accountabilityType);
+
+
+//                String multiTxt = "Wake Up Time:\t\t" + wakeUpTime +"\n" +
+//                        "BedTime:\t\t" + bedTime + "\n" +
+//                        "Accountability:\t\t" + GlobalVars.accountabilityType;
+//                currentSettings.setText(multiTxt);
 
                 int tempAwakeNum = Integer.valueOf(awakeCount);
                 int tempSleepNum = Integer.valueOf(sleepCount);
@@ -107,12 +128,30 @@ public class ProfileFragment extends Fragment {
                 editor.putString("counter", counter);
                 editor.apply();
 
+                // setting the default text views for progress
                 TextView currentProgress = view.findViewById(R.id.progress);
-                String progressTxt = "Current Progress\n" +
-                        "Total Cycles: " + counter + "\n" +
-                        "Woken Up " + awakeCount + " times\n" +
-                        "Slept " + sleepCount + " times";
-                currentProgress.setText(progressTxt);
+                currentProgress.setText("current progress");
+                TextView totalCyclesTxt = view.findViewById(R.id.totalCyclesTxt);
+                totalCyclesTxt.setText("total cycles");
+                TextView awakeButtonTxt = view.findViewById(R.id.awakeButtonTxt);
+                awakeButtonTxt.setText("times woken up");
+                TextView sleepButtonTxt = view.findViewById(R.id.sleepButtonTxt);
+                sleepButtonTxt.setText("times slept");
+
+                // making and setting the variable text views for progress
+                TextView totalCyclesNum = view.findViewById(R.id.totalCyclesNum);
+                totalCyclesNum.setText(counter);
+                TextView awakeButtonNum = view.findViewById(R.id.awakeButtonNum);
+                awakeButtonNum.setText(awakeCount);
+                TextView sleepButtonNum = view.findViewById(R.id.sleepButtonNum);
+                sleepButtonNum.setText(sleepCount);
+
+
+//                String progressTxt = "Current Progress\n" +
+//                        "Total Cycles: " + counter + "\n" +
+//                        "Woken Up " + awakeCount + " times\n" +
+//                        "Slept " + sleepCount + " times";
+//                currentProgress.setText(progressTxt);
             }
 
             @Override

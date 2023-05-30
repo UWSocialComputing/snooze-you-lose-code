@@ -171,11 +171,13 @@ public class HomeFragment extends Fragment {
         calendar1.set(Calendar.HOUR_OF_DAY, t1Hour);
         calendar1.set(Calendar.MINUTE, t1Minute);
         tvTimer1.setText(android.text.format.DateFormat.format("hh:mm aa", calendar1));
+        tvTimer1.setTextColor(Color.WHITE);
 
         Calendar calendar2 = Calendar.getInstance();
         calendar2.set(Calendar.HOUR_OF_DAY, t2Hour);
         calendar2.set(Calendar.MINUTE, t2Minute);
         tvTimer2.setText(android.text.format.DateFormat.format("hh:mm aa", calendar2));
+        tvTimer2.setTextColor(Color.WHITE);
 
         String wakeTemp = (String) android.text.format.DateFormat.format("hh:mm aa", calendar1);
         String bedTemp = (String) android.text.format.DateFormat.format("hh:mm aa", calendar2);

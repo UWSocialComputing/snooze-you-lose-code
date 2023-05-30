@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <string name="app_name">SnoozeYouLose</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -14,10 +14,11 @@
         <item>Send a text to my friend</item>
         <item>Donate to charity</item>
         <item>Post on your IG story</item>
-        <item>Send money to a friend</item>
+        <item> Send money to a friend</item>
         <item>No social media before bed</item>
         <item>Call your friend</item>
     </string-array>
+
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
