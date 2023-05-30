@@ -8,14 +8,10 @@
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_person_outline"
         android:title="Profile" />
-<!--    <item-->
-<!--        android:id="@+id/nav_users"-->
-<!--        android:icon="@drawable/baseline_star_24"-->
-<!--        android:title="Users" />-->
 
     <item
         android:id="@+id/nav_chat"
         android:icon="@drawable/ic_chat_black_24dp"
-        android:title="ChatList" />
+        android:title="Chats" />
 
 </menu>

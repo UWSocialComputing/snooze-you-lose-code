@@ -11,12 +11,12 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string-array name="accountability_options">
-        <item>Send a text to my friend</item>
-        <item>Donate to charity</item>
-        <item>Post on your IG story</item>
-        <item> Send money to a friend</item>
-        <item>No social media before bed</item>
-        <item>Call your friend</item>
+        <item>send a text to my friend</item>
+        <item>donate to charity</item>
+        <item>post on your IG story</item>
+        <item>send money to a friend</item>
+        <item>no social media before bed</item>
+        <item>call your friend</item>
     </string-array>
 
 

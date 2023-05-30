@@ -33,7 +33,7 @@
   <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="Wake Up time"
+      android:text="Wake Up Time"
       android:textSize="32sp"
       android:textStyle="bold"
       android:textColor="#FFFFFF"
