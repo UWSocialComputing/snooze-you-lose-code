@@ -5,23 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/sleep_background"
     android:orientation="vertical"
-    tools:context=".ui.profile.ProfileFragment"
-    android:background="@drawable/sleep_background">
+    tools:context=".ui.profile.ProfileFragment">
 
     <TextView
         android:id="@+id/welcomeUserText"
         android:layout_width="match_parent"
         android:layout_height="112dp"
+        android:drawablePadding="16dp"
+        android:fontFamily="@font/comfortaa_regular"
+        android:gravity="center"
         android:text="welcome back, user"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:gravity="center"
-        android:drawablePadding="16dp"
-        android:fontFamily="@font/comfortaa_regular"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/progress"
@@ -96,9 +96,10 @@
         android:id="@+id/divider1"
         android:layout_width="409dp"
         android:layout_height="1dp"
+        android:layout_marginStart="1dp"
         android:background="?android:attr/listDivider"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="179dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalCyclesTxt" />
 
     <TextView
         android:id="@+id/awakeButtonTxt"
@@ -128,9 +129,10 @@
         android:id="@+id/divider2"
         android:layout_width="409dp"
         android:layout_height="1dp"
+        android:layout_marginStart="2dp"
         android:background="?android:attr/listDivider"
-        tools:layout_editor_absoluteX="2dp"
-        tools:layout_editor_absoluteY="219dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/awakeButtonTxt" />
 
     <TextView
         android:id="@+id/sleepButtonTxt"
@@ -185,8 +187,8 @@
         android:layout_width="409dp"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="495dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wakeupTimeTxt" />
 
     <TextView
         android:id="@+id/bedTimeTxt"
@@ -217,8 +219,8 @@
         android:layout_width="409dp"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="539dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bedTimeTxt" />
 
     <TextView
         android:id="@+id/accountabilityTxt"
