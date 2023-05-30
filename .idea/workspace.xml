@@ -11,12 +11,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="Worked on the home UI, have changed the font and added a theme.">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/rounded_background_profile.xml" afterDir="false" />
+    <list default="true" id="e52b196f-a050-4712-b1b7-44cee3f75c97" name="Changes" comment="Worked on profile UI, changed font and size">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/night_alarm_clock_button_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/night_alarm_clock_button_background.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_profile.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_chat.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/row_chatlist.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/row_chatlist.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -289,7 +287,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685394012242</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Worked on profile UI, changed font and size">
+      <created>1685401888178</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1685401888178</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -316,6 +321,7 @@
     <MESSAGE value="initial time now saved and accessible on startup from db!! " />
     <MESSAGE value="moved buttons to profile -- including wake up and new sleep button and their respective messages " />
     <MESSAGE value="Worked on the home UI, have changed the font and added a theme." />
-    <option name="LAST_COMMIT_MESSAGE" value="Worked on the home UI, have changed the font and added a theme." />
+    <MESSAGE value="Worked on profile UI, changed font and size" />
+    <option name="LAST_COMMIT_MESSAGE" value="Worked on profile UI, changed font and size" />
   </component>
 </project>
