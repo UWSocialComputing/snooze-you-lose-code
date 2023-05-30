@@ -62,7 +62,8 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.Myhold
         }
         try {
             // loading profile pic of user
-            Glide.with(context).load(userimage).into(holder.profile);
+            int userimageid = context.getResources().getIdentifier(userimage, "drawable", context.getPackageName());
+            Glide.with(context).load(userimageid).into(holder.profile);
         } catch (Exception e) {
 
         }

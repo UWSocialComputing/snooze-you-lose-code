@@ -157,6 +157,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logNewUser(){
+
+
+        String picture = "";
+
+        int randomPicture = (int)(Math.random() * 5);
+
+        switch (randomPicture){
+            case 0:
+                picture = "profile_1";
+                break;
+            case 1:
+                picture = "profile_2";
+                break;
+            case 2:
+                picture = "profile_3";
+                break;
+            case 3:
+                picture = "profile_4";
+                break;
+            case 4:
+                picture = "profile_5";
+                break;
+
+        }
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String email = user.getEmail();
         String uid = user.getUid();
@@ -169,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
         hashMap.put("onlineStatus", "online");
         hashMap.put("typingTo", "noOne");
         hashMap.put("phone", "");
-        hashMap.put("image", "");
+        hashMap.put("image", picture);
         hashMap.put("cover", "");
         hashMap.put("accountability", "");
         hashMap.put("bedTime", "");

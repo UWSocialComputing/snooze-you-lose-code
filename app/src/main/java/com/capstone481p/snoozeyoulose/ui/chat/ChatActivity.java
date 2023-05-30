@@ -167,7 +167,8 @@ public class ChatActivity extends AppCompatActivity {
 //                    }
                     name.setText(nameh);
                     try {
-                        Glide.with(ChatActivity.this).load(image).placeholder(R.drawable.baseline_star_24).into(profile);
+                        int userimageid = ChatActivity.this.getResources().getIdentifier(image, "drawable", ChatActivity.this.getPackageName());
+                        Glide.with(ChatActivity.this).load(userimageid).placeholder(R.drawable.baseline_star_24).into(profile);
                     } catch (Exception e) {
 
                     }

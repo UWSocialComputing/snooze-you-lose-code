@@ -54,9 +54,9 @@ public class DashboardActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.content, fragment, "");
             fragmentTransaction.commit();
         } else {
-            actionBar.setTitle("Profile");
-            navigationView.setSelectedItemId(R.id.nav_profile);
-            ProfileFragment fragment = new ProfileFragment();
+            actionBar.setTitle("Home");
+            navigationView.setSelectedItemId(R.id.nav_home);
+            HomeFragment fragment = new HomeFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.content, fragment, "");
             fragmentTransaction.commit();
@@ -83,14 +83,6 @@ public class DashboardActivity extends AppCompatActivity {
                     FragmentTransaction fragmentTransactionP = getSupportFragmentManager().beginTransaction();
                     fragmentTransactionP.replace(R.id.content, fragmentP, "");
                     fragmentTransactionP.commit();
-                    return true;
-
-                case 2131362192:
-                    actionBar.setTitle("Users");
-                    UsersFragment fragment2 = new UsersFragment();
-                    FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction2.replace(R.id.content, fragment2, "");
-                    fragmentTransaction2.commit();
                     return true;
 
                 case 2131362186:
