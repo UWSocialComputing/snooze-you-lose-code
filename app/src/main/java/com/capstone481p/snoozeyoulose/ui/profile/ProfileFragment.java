@@ -8,15 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.provider.Settings;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.ui.GlobalVars;
@@ -30,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import org.w3c.dom.Text;
 
@@ -55,8 +53,6 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        Log.d("CONTEXT", "Context for the fragment: " + getContext().getPackageName());
-
         context = getContext();
 
         return view;
@@ -67,10 +63,6 @@ public class ProfileFragment extends Fragment {
 
         sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-
-//        awakeCount = sharedPreferences.getString("awakeCount", "0");
-//        sleepCount = sharedPreferences.getString("sleepCount", "0");
-//        counter = sharedPreferences.getString("counter", "0");
 
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -90,7 +82,6 @@ public class ProfileFragment extends Fragment {
                 TextView welcomeUserText = view.findViewById(R.id.welcomeUserText);
                 welcomeUserText.setText("Welcome back, " + userName);
 
-                // accountability = snapshot.child("accountability").getValue(String.class);
                 // setting the default text views for settings
                 TextView currentSettings = view.findViewById(R.id.currentSettings);
                 currentSettings.setText("current settings info");
@@ -108,12 +99,6 @@ public class ProfileFragment extends Fragment {
                 bedTimeNum.setText(bedTime);
                 TextView accountabilitySelected = view.findViewById(R.id.accountabilitySelected);
                 accountabilitySelected.setText(GlobalVars.accountabilityType);
-
-
-//                String multiTxt = "Wake Up Time:\t\t" + wakeUpTime +"\n" +
-//                        "BedTime:\t\t" + bedTime + "\n" +
-//                        "Accountability:\t\t" + GlobalVars.accountabilityType;
-//                currentSettings.setText(multiTxt);
 
                 int tempAwakeNum = Integer.valueOf(awakeCount);
                 int tempSleepNum = Integer.valueOf(sleepCount);
@@ -146,12 +131,6 @@ public class ProfileFragment extends Fragment {
                 TextView sleepButtonNum = view.findViewById(R.id.sleepButtonNum);
                 sleepButtonNum.setText(sleepCount);
 
-
-//                String progressTxt = "Current Progress\n" +
-//                        "Total Cycles: " + counter + "\n" +
-//                        "Woken Up " + awakeCount + " times\n" +
-//                        "Slept " + sleepCount + " times";
-//                currentProgress.setText(progressTxt);
             }
 
             @Override
@@ -162,32 +141,29 @@ public class ProfileFragment extends Fragment {
         });
 
         awakeButton = view.findViewById(R.id.awakeButton);
-        awakeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                awakeMessage();
-                String tempAwake = String.valueOf(Integer.valueOf(awakeCount) + 1);
-                awakeCount = tempAwake;
-                ref.child("awakeCount").setValue(tempAwake);
-                editor.putString("awakeCount", awakeCount);
-                editor.apply();
-            }
+        awakeButton.setOnClickListener(v -> {
+            awakeMessage();
+            String tempAwake = String.valueOf(Integer.valueOf(awakeCount) + 1);
+            awakeCount = tempAwake;
+            ref.child("awakeCount").setValue(tempAwake);
+            editor.putString("awakeCount", awakeCount);
+            editor.apply();
         });
 
         sleepButton = view.findViewById(R.id.sleepButton);
-        sleepButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sleepMessage();
-                String tempSleep = String.valueOf(Integer.valueOf(sleepCount) + 1);
-                sleepCount = tempSleep;
-                ref.child("sleepCount").setValue(tempSleep);
-                editor.putString("sleepCount", sleepCount);
-                editor.apply();
-            }
+        sleepButton.setOnClickListener(v -> {
+            sleepMessage();
+            String tempSleep = String.valueOf(Integer.valueOf(sleepCount) + 1);
+            sleepCount = tempSleep;
+            ref.child("sleepCount").setValue(tempSleep);
+            editor.putString("sleepCount", sleepCount);
+            editor.apply();
         });
     }
 
+    /**
+     * Creates a snackbar with a wake-up message and an option to share status with friends
+     */
     public void awakeMessage() {
         String message = "Congrats on waking up! Remember to slay the day 💅. " +
                 "Do want to share that you've achieved this goal with friends?";
@@ -203,7 +179,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                         DataSnapshot ds = dataSnapshot.child(uid);
 
                         String finalMessage = "I woke up on time today! Thanks for helping me improve my routine!";
@@ -233,9 +209,11 @@ public class ProfileFragment extends Fragment {
 
         snack.setTextMaxLines(7);
         snack.show();
-        //Toast.makeText(context, "Congrats on waking up!\nRemember to slay the day 💅", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Creates a snackbar with a sleep message and an option to share status with friends
+     */
     public void sleepMessage() {
         String message = "Remember to get that beauty sleep and go to bed soon 😪. "+
                 "Do want to share that you've achieved this goal with friends?";
@@ -281,7 +259,6 @@ public class ProfileFragment extends Fragment {
         });
         snack.setTextMaxLines(7);
         snack.show();
-        //Toast.makeText(context, "Remember to get that beauty sleep\nand go to bed soon 😪", Toast.LENGTH_SHORT).show();
     }
 
     @Override

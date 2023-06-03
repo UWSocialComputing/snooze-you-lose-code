@@ -2,7 +2,15 @@ package com.capstone481p.snoozeyoulose.ui.chat;
 
 public class ModelChat {
     String message;
+    String receiver;
+    String sender;
+    String type;
+    String timestamp;
 
+
+    public ModelChat() {
+        // This class models chat information in order to retrieve info from the database
+    }
 
     public String getMessage() {
         return message;
@@ -36,21 +44,6 @@ public class ModelChat {
         this.timestamp = timestamp;
     }
 
-    public boolean isDilihat() {
-        return dilihat;
-    }
-
-    public void setDilihat(boolean dilihat) {
-        this.dilihat = dilihat;
-    }
-
-    String receiver;
-
-    public ModelChat() {
-    }
-
-    String sender;
-
     public String getType() {
         return type;
     }
@@ -59,20 +52,14 @@ public class ModelChat {
         this.type = type;
     }
 
-    public ModelChat(String message, String receiver, String sender, String type, String timestamp, boolean dilihat) {
+    public ModelChat(String message, String receiver, String sender, String type, String timestamp) {
         this.message = message;
         this.receiver = receiver;
         this.sender = sender;
         this.type = type;
         this.timestamp = timestamp;
-        this.dilihat = dilihat;
     }
 
-    String type;
 
 
-    String timestamp;
-
-
-    boolean dilihat;
 }

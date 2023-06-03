@@ -17,7 +17,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imagep"
+            android:id="@+id/imageu"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/ic_chat_black_24dp" />
@@ -34,18 +34,18 @@
                 android:layout_height="13dp" />
 
             <TextView
-                android:id="@+id/namep"
+                android:id="@+id/nameu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Person NAme"
+                android:text="User Name"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/emailp"
+                android:id="@+id/emailu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Person Email"
+                android:text="User Email"
                 android:textColor="@color/black" />
 
         </LinearLayout>

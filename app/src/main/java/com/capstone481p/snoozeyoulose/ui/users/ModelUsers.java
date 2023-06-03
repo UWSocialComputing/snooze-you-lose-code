@@ -3,26 +3,37 @@ package com.capstone481p.snoozeyoulose.ui.users;
 public class ModelUsers {
     String name;
 
+    String email;
+
+    String image;
+
+    String uid;
+
+    String accountability;
+
+    String bedTime;
+
+    String wakeupTime;
+
     public ModelUsers() {
+        // This class is used to model users to add and retrieve user info from a database
     }
 
-    String onlineStatus;
-    String typingTo;
-
+    public ModelUsers(String name, String email, String image, String uid, String accountability, String bedTime, String wakeupTime) {
+        this.name = name;
+        this.email = email;
+        this.image = image;
+        this.uid = uid;
+        this.accountability = accountability;
+        this.bedTime = bedTime;
+        this.wakeupTime = wakeupTime;
+    }
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getTypingTo() {
-        return typingTo;
-    }
-
-    public void setTypingTo(String typingTo) {
-        this.typingTo = typingTo;
     }
 
     public String getEmail() {
@@ -59,49 +70,4 @@ public class ModelUsers {
     public void setWakeupTime(String wakeupTime) { this.wakeupTime = wakeupTime; }
     public String getWakeupTime() { return wakeupTime; }
 
-    public void setAwakeCount(String awakeCount) { this.awakeCount = awakeCount; }
-    public String getAwakeCount() { return awakeCount; }
-
-    public void setSleepCount(String sleepCount) { this.sleepCount = sleepCount; }
-    public String getSleepCount() { return sleepCount; }
-
-    public void setCounter(String counter) { this.counter = counter; }
-    public String getCounter() { return counter; }
-
-    public void setOnlineStatus(String onlineStatus){this.onlineStatus = onlineStatus;}
-
-    public String getOnlineStatus(){return onlineStatus;}
-
-    public ModelUsers(String name, String onlineStatus, String typingTo, String email, String image, String uid, String accountability, String bedTime, String wakeupTime, String awakeCount, String sleepCount, String counter) {
-        this.name = name;
-        this.onlineStatus = onlineStatus;
-        this.typingTo = typingTo;
-        this.email = email;
-        this.image = image;
-        this.uid = uid;
-        this.accountability = accountability;
-        this.bedTime = bedTime;
-        this.wakeupTime = wakeupTime;
-        this.awakeCount = awakeCount;
-        this.sleepCount = sleepCount;
-        this.counter = counter;
-    }
-
-    String email;
-
-    String image;
-
-    String uid;
-
-    String accountability;
-
-    String bedTime;
-
-    String wakeupTime;
-
-    String awakeCount;
-
-    String sleepCount;
-
-    String counter;
 }

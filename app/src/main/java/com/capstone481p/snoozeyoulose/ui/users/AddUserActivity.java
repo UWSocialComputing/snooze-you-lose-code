@@ -31,7 +31,6 @@ public class AddUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addusers);
         firebaseAuth = FirebaseAuth.getInstance();
-
         recyclerView = findViewById(R.id.recyclek);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(AddUserActivity.this));
@@ -40,6 +39,10 @@ public class AddUserActivity extends AppCompatActivity {
         getAllUsers();
     }
 
+    /**
+     * Retrieves all registered users from the database and starts adding sets of information
+     * per user to the recycler view
+     */
     private void getAllUsers() {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");

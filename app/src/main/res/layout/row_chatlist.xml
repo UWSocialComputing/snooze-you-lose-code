@@ -21,15 +21,8 @@
             android:layout_height="70dp"
             android:src="@drawable/fui_ic_twitter_bird_white_24dp" />
 
-        <ImageView
-            android:id="@+id/onlinestatus"
-            android:layout_width="25dp"
-            android:layout_height="25dp" />
-
-
-
         <TextView
-            android:id="@+id/nameonline"
+            android:id="@+id/namechat"
             android:layout_width="335dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
@@ -37,7 +30,7 @@
             android:layout_toEndOf="@id/profileimage"
             android:layout_toRightOf="@id/profileimage"
             android:layout_marginTop="10dp"
-            android:text="His Name"
+            android:text="Name"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -45,7 +38,7 @@
             android:id="@+id/lastmessge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nameonline"
+            android:layout_below="@id/namechat"
             android:layout_marginStart="2dp"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="3dp"
@@ -55,22 +48,6 @@
             android:text="Last Message"
             android:textColor="@color/black" />
 
-        <ImageView
-            android:id="@+id/blocking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/fui_ic_mail_white_24dp" />
-
-        <ImageView
-            android:id="@+id/seen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/blocking"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/fui_ic_anonymous_white_24dp" />
 
     </RelativeLayout>
 

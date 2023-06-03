@@ -14,21 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.ui.chat.ChatActivity;
-import com.capstone481p.snoozeyoulose.ui.chat.ModelChatList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
 import java.util.List;
 
-// import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
+
+public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.UserHolder> {
 
     Context context;
     FirebaseAuth firebaseAuth;
     String uid;
+
+    List<ModelUsers> list;
 
     public AdapterUsers(Context context, List<ModelUsers> list) {
         this.context = context;
@@ -37,44 +37,40 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
         uid = firebaseAuth.getUid();
     }
 
-    List<ModelUsers> list;
-
     @NonNull
     @Override
-    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UserHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_users, parent, false);
-        return new MyHolder(view);
+        return new UserHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, final int position) {
-        final String hisuid = list.get(position).getUid();
+    public void onBindViewHolder(@NonNull UserHolder holder, final int position) {
+        final String fid = list.get(position).getUid();
         String userImage = list.get(position).getImage();
-        String username = list.get(position).getName();
-        String usermail = list.get(position).getEmail();
-        holder.name.setText(username);
-        holder.email.setText(usermail);
+        String userName = list.get(position).getName();
+        String userEmail = list.get(position).getEmail();
+        holder.name.setText(userName);
+        holder.email.setText(userEmail);
         try {
-            int userimageid = context.getResources().getIdentifier(userImage, "drawable", context.getPackageName());
-            Glide.with(context).load(userimageid).into(holder.profiletv);
-        } catch (Exception e) {
+            // finds the image tag within the drawable resources
+            int userImageID = context.getResources().getIdentifier(userImage, "drawable", context.getPackageName());
+            Glide.with(context).load(userImageID).into(holder.profile);
+        } catch (Exception ignored) {
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                // store the value in Database in "Users" Node
-                DatabaseReference reference = database.getReference("ChatList");
+        // Clicking on a user card will start the chat activity and add the user to the
+        // current user's chat list
+        holder.itemView.setOnClickListener(v -> {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                // storing the value in Firebase
-                reference.child(uid).child(hisuid).child("id").setValue(hisuid);
-                Intent intent = new Intent(context, ChatActivity.class);
+            DatabaseReference reference = database.getReference("ChatList");
 
-                // putting uid of user in extras
-                intent.putExtra("uid", hisuid);
-                context.startActivity(intent);
-            }
+            reference.child(uid).child(fid).child("id").setValue(fid);
+            Intent intent = new Intent(context, ChatActivity.class);
+
+            intent.putExtra("uid", fid);
+            context.startActivity(intent);
         });
     }
 
@@ -83,16 +79,16 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
         return list.size();
     }
 
-    class MyHolder extends RecyclerView.ViewHolder {
+    class UserHolder extends RecyclerView.ViewHolder {
 
-        ImageView profiletv;
+        ImageView profile;
         TextView name, email;
 
-        public MyHolder(@NonNull View itemView) {
+        public UserHolder(@NonNull View itemView) {
             super(itemView);
-            profiletv = itemView.findViewById(R.id.imagep);
-            name = itemView.findViewById(R.id.namep);
-            email = itemView.findViewById(R.id.emailp);
+            profile = itemView.findViewById(R.id.imageu);
+            name = itemView.findViewById(R.id.nameu);
+            email = itemView.findViewById(R.id.emailu);
         }
     }
 }

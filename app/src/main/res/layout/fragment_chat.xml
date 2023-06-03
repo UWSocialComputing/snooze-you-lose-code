@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/add_chat_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="New Accountability Buddy" />

@@ -1,8 +1,6 @@
 package com.capstone481p.snoozeyoulose.ui.home;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,9 +12,6 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,21 +24,18 @@ import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.ui.chat.ModelChatList;
 import com.capstone481p.snoozeyoulose.ui.users.ModelUsers;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Calendar;
 import java.util.HashMap;
-
-//adding comment here to push this as well
-
 
 public class AlarmReceiver extends BroadcastReceiver {
 
+    // This class is used to process events following an alarm being triggered,
+    // such as the alarm notification and any texts to users
     private static final String CHANNEL_ID = "alarm_channel";
     private static final String CHANNEL_NAME = "Alarm Channel";
     private Context context;
@@ -54,7 +46,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        // TODO: How do we handle different text for different alarms??
+
         this.context = context;
 
         this.alarmType = intent.getBooleanExtra("alarm_type", true);
@@ -91,13 +83,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         // Show the notification
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: finish permission handling
-            Toast.makeText(context, "Jail, notifications are illegal", Toast.LENGTH_SHORT).show();
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            Toast.makeText(context, "Sorry, you have notifications disabled :(", Toast.LENGTH_SHORT).show();
             return;
         }
         notificationManager.notify(1, builder.build());
@@ -105,12 +91,11 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
     private void sendNotificationToFriend(Context context) {
         // Code to send a notification to your friend
-        // This is only done if you have send a text to your friend
-        // as an accountability type
+        // This is only done if you have "send a text to your friend"
+        // as your accountability type
 
         // accountability selected t/f, name
         final String[] sendText = {"f",""};
-
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users");
@@ -121,16 +106,10 @@ public class AlarmReceiver extends BroadcastReceiver {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataSnapshot ds = dataSnapshot.child(uid);
                 ModelUsers user = ds.getValue(ModelUsers.class);
-                Log.d("TEXT_DEBUG", "READING DATA NOW BEEP BOOP");
                 if(user.getAccountability().equals("Send a text to my friend")){
                     sendText[0] = "t";
                 }
                 sendText[1] = user.getName();
-
-                Log.d("TEXT_DEBUG", "Reading: "+sendText[0]+ ", "+sendText[1]);
-                Log.d("TEXT_DEBUG", "Did we get the accountability method: "+sendText[0]);
-                Log.d("TEXT_DEBUG", "Did we get the name: "+sendText[1]);
-
 
                 // Only sends a text if the correct accountability method is selected
                 if(sendText[0].equals("t")) {

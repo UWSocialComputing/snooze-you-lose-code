@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.HashMap;
 import java.util.List;
 
-public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.Myholder> {
+public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.ChatListHolder> {
 
     Context context;
     FirebaseAuth firebaseAuth;
@@ -38,33 +38,32 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.Myhold
 
     @NonNull
     @Override
-    public Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ChatListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.row_chatlist, parent, false);
-        return new Myholder(view);
+        return new ChatListHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Myholder holder, final int position) {
+    public void onBindViewHolder(@NonNull ChatListHolder holder, final int position) {
 
-        final String hisuid = usersList.get(position).getUid();
-        String userimage = usersList.get(position).getImage();
-        String username = usersList.get(position).getName();
-        String lastmess = lastMessageMap.get(hisuid);
-        holder.name.setText(username);
-        //holder.block.setImageResource(R.drawable.ic_home_black_24dp);
+        final String fid = usersList.get(position).getUid();
+        String userImage = usersList.get(position).getImage();
+        String userName = usersList.get(position).getName();
+        String lastMessage = lastMessageMap.get(fid);
+        holder.name.setText(userName);
 
-        // if no last message then Hide the layout
-        if (lastmess == null || lastmess.equals("default")) {
-            holder.lastmessage.setVisibility(View.GONE);
+        // Handling for chats with no last messages
+        if (lastMessage == null || lastMessage.equals("default")) {
+            holder.lastMessage.setVisibility(View.GONE);
         } else {
-            holder.lastmessage.setVisibility(View.VISIBLE);
-            holder.lastmessage.setText(lastmess);
+            holder.lastMessage.setVisibility(View.VISIBLE);
+            holder.lastMessage.setText(lastMessage);
         }
         try {
-            // loading profile pic of user
-            int userimageid = context.getResources().getIdentifier(userimage, "drawable", context.getPackageName());
-            Glide.with(context).load(userimageid).into(holder.profile);
-        } catch (Exception e) {
+            // finding the profile image in drawable
+            int userImageId= context.getResources().getIdentifier(userImage, "drawable", context.getPackageName());
+            Glide.with(context).load(userImageId).into(holder.profile);
+        } catch (Exception ignored) {
 
         }
 
@@ -75,7 +74,7 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.Myhold
                 Intent intent = new Intent(context, ChatActivity.class);
 
                 // putting uid of user in extras
-                intent.putExtra("uid", hisuid);
+                intent.putExtra("uid", fid);
                 context.startActivity(intent);
             }
         });
@@ -83,8 +82,8 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.Myhold
     }
 
     // setting last message sent by users.
-    public void setlastMessageMap(String userId, String lastmessage) {
-        lastMessageMap.put(userId, lastmessage);
+    public void setLastMessageMap(String userId, String lastMessage) {
+        lastMessageMap.put(userId, lastMessage);
     }
 
     @Override
@@ -92,18 +91,15 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.Myhold
         return usersList.size();
     }
 
-    class Myholder extends RecyclerView.ViewHolder {
-        ImageView profile, status, block, seen;
-        TextView name, lastmessage;
+    class ChatListHolder extends RecyclerView.ViewHolder {
+        ImageView profile;
+        TextView name, lastMessage;
 
-        public Myholder(@NonNull View itemView) {
+        public ChatListHolder(@NonNull View itemView) {
             super(itemView);
             profile = itemView.findViewById(R.id.profileimage);
-            status = itemView.findViewById(R.id.onlinestatus);
-            name = itemView.findViewById(R.id.nameonline);
-            lastmessage = itemView.findViewById(R.id.lastmessge);
-            block = itemView.findViewById(R.id.blocking);
-            seen = itemView.findViewById(R.id.seen);
+            name = itemView.findViewById(R.id.namechat);
+            lastMessage = itemView.findViewById(R.id.lastmessge);
         }
     }
 }

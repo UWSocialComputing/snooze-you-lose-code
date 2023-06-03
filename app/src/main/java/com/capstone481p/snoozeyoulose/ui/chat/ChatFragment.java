@@ -3,7 +3,6 @@ package com.capstone481p.snoozeyoulose.ui.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.capstone481p.snoozeyoulose.R;
 import com.capstone481p.snoozeyoulose.ui.users.AddUserActivity;
-import com.capstone481p.snoozeyoulose.ui.users.ModelUsers;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,9 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class ChatFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
@@ -43,31 +39,29 @@ public class ChatFragment extends Fragment {
     List<ModelChat> chatList;
 
     public ChatFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Log.d("DEBUG", "Creating chat view");
-
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        Button addNew = view.findViewById(R.id.button3);
+        Button addNew = view.findViewById(R.id.add_chat_button);
 
-        // getting current user
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         recyclerView = view.findViewById(R.id.chatlistrecycle);
+        // The list of people the user is chatting with
         chatListList = new ArrayList<>();
+        // The list of chats the user has
         chatList = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 chatListList.clear();
+                // Loading people who the user is currently chatting with
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelChatList modelChatList = ds.getValue(ModelChatList.class);
                     if (!modelChatList.getId().equals(firebaseUser.getUid())) {
@@ -84,28 +78,26 @@ public class ChatFragment extends Fragment {
             }
         });
 
-        addNew.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddUserActivity.class);
-                Log.d("CONTEXT", "Chat frag context (add button): "+getActivity().getPackageName());
-                getActivity().startActivity(intent);
-            }
+        // Add user button starts the Add User Activity
+        addNew.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), AddUserActivity.class);
+            requireActivity().startActivity(intent);
         });
 
         return view;
     }
 
-    // loading the user chat layout using chat node
+    /**
+     * Loads all of the friends the current user is engaged in chats with
+     */
     private void loadChats() {
         usersList = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Users");
-        Log.d("DEBUG", "loading chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usersList.clear();
+                // Loading people who the user is currently chatting with
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
                     com.capstone481p.snoozeyoulose.ui.users.ModelUsers user = dataSnapshot1.getValue(com.capstone481p.snoozeyoulose.ui.users.ModelUsers.class);
@@ -119,7 +111,6 @@ public class ChatFragment extends Fragment {
                     adapterChatList = new AdapterChatList(getActivity(), usersList);
                     recyclerView.setAdapter(adapterChatList);
 
-                    // getting last message of the user
                     for (int i = 0; i < usersList.size(); i++) {
                         lastMessage(usersList.get(i).getUid());
                     }
@@ -133,12 +124,18 @@ public class ChatFragment extends Fragment {
         });
     }
 
+    /**
+     * Retrieves the last message with friends in the chat list
+     * @param uid id of the friend
+     */
     private void lastMessage(final String uid) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chats");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String lastmess = "default";
+                // Gets the relevant information from the chats in the database
+                // to display on the fragment
+                String lastMessage = "default";
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     ModelChat chat = dataSnapshot1.getValue(ModelChat.class);
                     if (chat == null) {
@@ -149,21 +146,18 @@ public class ChatFragment extends Fragment {
                     if (sender == null || receiver == null) {
                         continue;
                     }
-                    // checking for the type of message if
-                    // message type is image then set
-                    // last message as sent a photo
                     if (chat.getReceiver().equals(firebaseUser.getUid()) &&
                             chat.getSender().equals(uid) ||
                             chat.getReceiver().equals(uid) &&
                                     chat.getSender().equals(firebaseUser.getUid())) {
                         if (chat.getType().equals("images")) {
-                            lastmess = "Sent a Photo";
+                            lastMessage = "Sent a Photo";
                         } else {
-                            lastmess = chat.getMessage();
+                            lastMessage = chat.getMessage();
                         }
                     }
                 }
-                adapterChatList.setlastMessageMap(uid, lastmess);
+                adapterChatList.setLastMessageMap(uid, lastMessage);
                 adapterChatList.notifyDataSetChanged();
             }
 
